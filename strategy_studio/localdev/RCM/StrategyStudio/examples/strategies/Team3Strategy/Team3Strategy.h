@@ -198,7 +198,7 @@ extern "C" {
 
     _STRATEGY_EXPORTS const char* GetType()
     {
-        return "KushalStrategy";
+        return "Team3Strategy";
     }
 
     _STRATEGY_EXPORTS IStrategy* CreateStrategy(const char* strategyType, 

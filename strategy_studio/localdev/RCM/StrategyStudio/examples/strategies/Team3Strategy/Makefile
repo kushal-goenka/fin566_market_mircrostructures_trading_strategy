@@ -16,10 +16,10 @@ INCLUDEPATH=../../../includes
 
 INCLUDES=-I/usr/include -I$(INCLUDEPATH)
 LDFLAGS=$(LIBPATH)/libstrategystudio_analytics.a $(LIBPATH)/libstrategystudio.a $(LIBPATH)/libstrategystudio_transport.a $(LIBPATH)/libstrategystudio_marketmodels.a $(LIBPATH)/libstrategystudio_utilities.a $(LIBPATH)/libstrategystudio_flashprotocol.a
-LIBRARY=KushalStrategy.so
+LIBRARY=Team3Strategy.so
 
-SOURCES=KushalStrategy.cpp
-HEADERS=KushalStrategy.h
+SOURCES=Team3Strategy.cpp
+HEADERS=Team3Strategy.h
  
 OBJECTS=$(SOURCES:.cpp=.o)
 

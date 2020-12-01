@@ -22,7 +22,7 @@
     #include "stdafx.h"
 #endif
 
-#include "KushalStrategy.h"
+#include "Team3Strategy.h"
 
 #include "FillInfo.h"
 #include "AllEventMsg.h"

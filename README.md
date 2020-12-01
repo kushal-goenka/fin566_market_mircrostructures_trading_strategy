@@ -25,6 +25,18 @@ https://illinois.zoom.us/j/89410527998?pwd=ZzJQbGpCb1NxY3N2dkk2Y1JCTkhxQT09
 Meeting ID: 894 1052 7998
 Password: 172526
 
+## How to run a Strategy
+
+
+
+
+
+
+
+
+
+
+
 # Important Links:
 
 https://davidl.web.engr.illinois.edu/data/20191030_marketdata/
