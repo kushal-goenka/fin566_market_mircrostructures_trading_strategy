@@ -1,0 +1,23 @@
+var searchData=
+[
+  ['recursiveleastsquares',['RecursiveLeastSquares',['../d4/d72/class_r_c_m_1_1_strategy_studio_1_1_analytics_1_1_recursive_least_squares.html',1,'RCM::StrategyStudio::Analytics']]],
+  ['registerbarsparams',['RegisterBarsParams',['../d4/d56/struct_r_c_m_1_1_strategy_studio_1_1_register_bars_params.html',1,'RCM::StrategyStudio']]],
+  ['registerbroadcastcontroleventparams',['RegisterBroadcastControlEventParams',['../dc/d14/struct_r_c_m_1_1_strategy_studio_1_1_register_broadcast_control_event_params.html',1,'RCM::StrategyStudio']]],
+  ['registerclosureeventparams',['RegisterClosureEventParams',['../da/d8b/struct_r_c_m_1_1_strategy_studio_1_1_register_closure_event_params.html',1,'RCM::StrategyStudio']]],
+  ['registercontroleventparams',['RegisterControlEventParams',['../d9/d63/struct_r_c_m_1_1_strategy_studio_1_1_register_control_event_params.html',1,'RCM::StrategyStudio']]],
+  ['registercorpactioneventparams',['RegisterCorpActionEventParams',['../d5/dca/struct_r_c_m_1_1_strategy_studio_1_1_register_corp_action_event_params.html',1,'RCM::StrategyStudio']]],
+  ['registerdataparams',['RegisterDataParams',['../d9/d16/struct_r_c_m_1_1_strategy_studio_1_1_register_data_params.html',1,'RCM::StrategyStudio']]],
+  ['registerexternalorderparams',['RegisterExternalOrderParams',['../da/dce/struct_r_c_m_1_1_strategy_studio_1_1_register_external_order_params.html',1,'RCM::StrategyStudio']]],
+  ['registermarketdataparams',['RegisterMarketDataParams',['../d1/d60/struct_r_c_m_1_1_strategy_studio_1_1_register_market_data_params.html',1,'RCM::StrategyStudio']]],
+  ['registernewsparams',['RegisterNewsParams',['../d4/d21/struct_r_c_m_1_1_strategy_studio_1_1_register_news_params.html',1,'RCM::StrategyStudio']]],
+  ['registerorderupdateeventparams',['RegisterOrderUpdateEventParams',['../d4/df9/struct_r_c_m_1_1_strategy_studio_1_1_register_order_update_event_params.html',1,'RCM::StrategyStudio']]],
+  ['registerscheduledeventparams',['RegisterScheduledEventParams',['../d4/d92/struct_r_c_m_1_1_strategy_studio_1_1_register_scheduled_event_params.html',1,'RCM::StrategyStudio']]],
+  ['registersentimentparams',['RegisterSentimentParams',['../db/d08/struct_r_c_m_1_1_strategy_studio_1_1_register_sentiment_params.html',1,'RCM::StrategyStudio']]],
+  ['registerstrategyinstancestatechangeeventparams',['RegisterStrategyInstanceStateChangeEventParams',['../df/db5/struct_r_c_m_1_1_strategy_studio_1_1_register_strategy_instance_state_change_event_params.html',1,'RCM::StrategyStudio']]],
+  ['registerstrategystatechangeeventparams',['RegisterStrategyStateChangeEventParams',['../db/d73/struct_r_c_m_1_1_strategy_studio_1_1_register_strategy_state_change_event_params.html',1,'RCM::StrategyStudio']]],
+  ['registertopicsubscriptionparams',['RegisterTopicSubscriptionParams',['../dc/dc2/struct_r_c_m_1_1_strategy_studio_1_1_register_topic_subscription_params.html',1,'RCM::StrategyStudio']]],
+  ['replayeventmsg',['ReplayEventMsg',['../d4/d11/class_r_c_m_1_1_strategy_studio_1_1_replay_event_msg.html',1,'RCM::StrategyStudio']]],
+  ['replayeventtypeutils',['ReplayEventTypeUtils',['../de/d20/class_r_c_m_1_1_strategy_studio_1_1_replay_event_type_utils.html',1,'RCM::StrategyStudio']]],
+  ['riskcheckretval',['RiskCheckRetVal',['../d9/da7/class_r_c_m_1_1_strategy_studio_1_1_risk_check_ret_val.html',1,'RCM::StrategyStudio']]],
+  ['rollingwindow',['RollingWindow',['../da/d11/class_r_c_m_1_1_strategy_studio_1_1_analytics_1_1_rolling_window.html',1,'RCM::StrategyStudio::Analytics']]]
+];

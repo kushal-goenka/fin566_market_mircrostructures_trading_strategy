@@ -1,0 +1,3 @@
+DEBUG 2020-Nov-30 22:47:24.643726 ** Performance Results for Experiment: 1 **
+DEBUG 2020-Nov-30 22:47:24.643736 Strategy: KushalStrategyForSPY Total P&L: $5676.56
+DEBUG 2020-Nov-30 22:47:24.643738 SPY: $5676.555200
