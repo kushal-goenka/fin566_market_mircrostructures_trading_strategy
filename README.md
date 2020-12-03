@@ -15,6 +15,13 @@ Yong Xie yongxie2@illinois.edu - PhD Mathematics
 
 Kushal Goenka kgoenka2@illinois.edu - MEng Electrical and Computer Engineering
 
+---
+
+## Project Structure
+
+- **strategy_studio**: contains strategy implementation in strategy studio
+- **trading_signals**: trading signal analysis code for the strategy, mostly in Python.
+- **metrics**: portfolio and strategy evaluation metric module.
 
 ## Weekly Zoom Link Meeting:
 ___
