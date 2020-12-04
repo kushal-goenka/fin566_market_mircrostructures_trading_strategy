@@ -1,4 +1,0 @@
-DEBUG 2020-Nov-30 22:47:23.787475 Transitioning FillSimulator market state from UNKNOWN to CLOSE
-DEBUG 2020-Nov-30 22:47:23.787484 Transitioning FillSimulator market state from CLOSE to PREOPEN
-DEBUG 2020-Nov-30 22:47:23.787487 Transitioning FillSimulator market state from PREOPEN to OPEN
-DEBUG 2020-Nov-30 22:47:24.642927 Transitioning FillSimulator market state from OPEN to CLOSE
