@@ -1,6 +1,6 @@
 
-## FIN 566 Fall 2020 Team 3 Final Project
-___
+# FIN 566 Fall 2020 Team 3 Final Project
+
 
  Implementation of a High Frequency trading Strategy using the Strategy Studio backtesting software
 
@@ -15,6 +15,13 @@ Yong Xie yongxie2@illinois.edu - PhD Mathematics
 
 Kushal Goenka kgoenka2@illinois.edu - MEng Electrical and Computer Engineering
 
+---
+
+## Project Structure
+
+- **strategy_studio**: contains strategy implementation in strategy studio
+- **trading_signals**: trading signal analysis code for the strategy, mostly in Python.
+- **metrics**: portfolio and strategy evaluation metric module.
 
 ## Weekly Zoom Link Meeting:
 ___
@@ -26,18 +33,42 @@ Meeting ID: 894 1052 7998
 Password: 172526
 
 ## How to run a Strategy
+___
+
+- First Build the required strategy via:
+
+        cd /home/vagrant/Desktop/fin566_fall_2020_group_three/strategy_studio/localdev/RCM/StrategyStudio/examples/strategies/Team3Strategy
+
+        make clean
+
+        make all
+
+- This results in a <"StrategyName">.so file.
+
+        /home/vagrant/Desktop/fin566_fall_2020_group_three/strategy_studio/backtesting/./StrategyServerBacktesting
+
+- Create an instance of the trading strategy
+
+        create_instance Team3StrategyForSPY Team3Strategy UIUC SIM-1001-101 dlariviere 10000000 -symbols SPY
+
+- Start the backtest
+        
+        start_backtest 2019-10-30 2019-10-30 Team3StrategyForSPY 1
+
+- Now, find the local name of the most recently run backtest, by running
+        
+        ls -lA backtesting-results
+- To export the files and convert to CSV files:
+
+        export_cra_file backtesting-results/BACK_SimpleTradePairsTest_2019-11-19_045116_start_10-30-2019_end_10-30-2019.cra backtesting-cra-exports
+
+- The results will be in:
+
+        cd /home/vagrant/Desktop/fin566_fall_2020_group_three/strategy_studio/backtesting/backtesting-results
 
 
 
-
-
-
-
-
-
-
-
-# Important Links:
+## Important Links:
 
 https://davidl.web.engr.illinois.edu/data/20191030_marketdata/
 
