@@ -1,3 +1,0 @@
-INFO 2020-Nov-30 22:47:23.785894 Constructing BacktesterMDSource1
-INFO 2020-Nov-30 22:47:23.785991 Did not find TextBacktestReader feed config file ./text_tick_feed_config.csv, assuming consolidated is best source for all quotes/trades data
-ERROR 2020-Nov-30 22:47:23.787382 Parsing error for symbol SPY on date 20191030 line 1: bad lexical cast: source type value could not be interpreted as target
