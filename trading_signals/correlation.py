@@ -21,11 +21,15 @@ def comp_corr(input_folder, output_folder, dates, etf_ticker, comp_ticker):
     # Calculate correlation between components and eft price
 
     Args:
-        input_folder (str): [description]
-        output_folder ([type]): [description]
-        dates (str): 
-        etf_ticker ([type]): [description]
-        comp_ticker ([type]): [description]
+        input_folder (str): tick data folder
+        output_folder ([type]): output folder
+        dates (list of str): yyyymmdd
+        etf_ticker (str): ticker for etf of interest
+        comp_ticker (list of ticker): component tickers
+    Returns:
+        csv file with each row represent correlation of corresponding ticker with eft
+        and each column represent the date.
+
     """
 
     correlations = {}
