@@ -57,9 +57,9 @@ SimpleTrade::SimpleTrade(StrategyID strategyID, const std::string& strategyName,
     //this->set_enabled_post_close_trade_flag(true);
 }
 
-SimpleTrade::~SimpleTrade()
-{
-}
+// SimpleTrade::~SimpleTrade()
+// {
+// }
 
 void SimpleTrade::OnResetStrategyState()
 {

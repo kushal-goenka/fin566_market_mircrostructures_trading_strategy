@@ -45,7 +45,10 @@ ___
 
 - This results in a <"StrategyName">.so file.
 
-        /home/vagrant/Desktop/fin566_fall_2020_group_three/strategy_studio/backtesting/./StrategyServerBacktesting
+        /home/vagrant/Desktop/strategy_studio/backtesting/./StrategyServerBacktesting
+
+- Copy it over to the required folder
+        cp /home/vagrant/Desktop/strategy_studio/RCM/StrategyStudio/examples/strategies/Team3Strategy/Team3Strategy.so /home/vagrant/Desktop/strategy_studio/backtesting/strategies_dlls
 
 - Create an instance of the trading strategy
 
@@ -57,14 +60,14 @@ ___
 
 - Now, find the local name of the most recently run backtest, by running
         
-        ls -lA backtesting-results
+        ls -lA /home/vagrant/Desktop/strategy_studio/backtesting/backtesting-results
 - To export the files and convert to CSV files:
 
         export_cra_file backtesting-results/BACK_SimpleTradePairsTest_2019-11-19_045116_start_10-30-2019_end_10-30-2019.cra backtesting-cra-exports
 
 - The results will be in:
 
-        cd /home/vagrant/Desktop/fin566_fall_2020_group_three/strategy_studio/backtesting/backtesting-results
+        cd /home/vagrant/Desktop/strategy_studio/backtesting/backtesting-cra-exports
 
 
 
