@@ -177,7 +177,7 @@ void SimpleTrade::SendSimpleOrder(const Instrument* instrument, int trade_size)
     if (tra == TRADE_ACTION_RESULT_SUCCESSFUL) {
         m_instrument_order_id_map[instrument] = params.order_id;
         std::cout << "SendOrder(): Sending new order successful!" << std::endl;
-        std::cout << "Kushal Test 2" << std::endl;
+        std::cout << "Kushal Test 3" << std::endl;
     }
     else
     {
