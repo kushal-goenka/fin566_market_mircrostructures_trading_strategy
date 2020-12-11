@@ -1,23 +1,3 @@
-/*================================================================================                               
-*     Source: ../RCM/StrategyStudio/examples/strategies/SimpleMomentumStrategy/SimpleMomentumStrategy.cpp                                                        
-*     Last Update: 2013/6/1 13:55:14                                                                            
-*     Contents:                                     
-*     Distribution:          
-*                                                                                                                
-*                                                                                                                
-*     Copyright (c) RCM-X, 2011 - 2013.                                                  
-*     All rights reserved.                                                                                       
-*                                                                                                                
-*     This software is part of Licensed material, which is the property of RCM-X ("Company"), 
-*     and constitutes Confidential Information of the Company.                                                  
-*     Unauthorized use, modification, duplication or distribution is strictly prohibited by Federal law.         
-*     No title to or ownership of this software is hereby transferred.                                          
-*                                                                                                                
-*     The software is provided "as is", and in no event shall the Company or any of its affiliates or successors be liable for any 
-*     damages, including any lost profits or other incidental or consequential damages relating to the use of this software.       
-*     The Company makes no representations or warranties, express or implied, with regards to this software.                        
-/*================================================================================*/   
-
 #ifdef _WIN32
     #include "stdafx.h"
 #endif
@@ -197,6 +177,7 @@ void SimpleTrade::SendSimpleOrder(const Instrument* instrument, int trade_size)
     if (tra == TRADE_ACTION_RESULT_SUCCESSFUL) {
         m_instrument_order_id_map[instrument] = params.order_id;
         std::cout << "SendOrder(): Sending new order successful!" << std::endl;
+        std::cout << "Kushal Test 2" << std::endl;
     }
     else
     {
