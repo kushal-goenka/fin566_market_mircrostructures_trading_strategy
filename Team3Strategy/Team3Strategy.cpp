@@ -89,6 +89,9 @@ void Team3Strategy::RegisterForStrategyEvents(StrategyEventRegister* eventRegist
 void Team3Strategy::OnTrade(const TradeDataEventMsg& msg)
 {   
     if(msg.instrument().symbol() == "SPY"){
+
+        std::cout << "OnTrade():" << msg.instrument().symbol() << ": " << msg.trade().size() << " @ $" << msg.trade().price() << std::endl;
+        std::cout << "Previous():" << m_instrumentX.symbol() << " @ $" << lastXTradePrice << std::endl;
         m_instrumentX = &msg.instrument();
         lastXTradePrice = msg.trade().price();
         // cout << "Symbol Traded SPY" << endl;
