@@ -172,6 +172,16 @@ private:
     int m_short_window_size;
     int m_long_window_size;
     bool m_debug_on;
+
+    // Added by Kushal
+
+    const MarketModels::Instrument* m_instrumentX;
+    const MarketModels::Instrument* m_instrumentY;
+
+    double lastXTradePrice;
+    double lastYTradePrice;
+
+
 };
 
 extern "C" {

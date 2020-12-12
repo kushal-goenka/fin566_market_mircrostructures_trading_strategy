@@ -29,7 +29,11 @@ Team3Strategy::Team3Strategy(StrategyID strategyID, const std::string& strategyN
     m_position_size(100),
     m_debug_on(true),
     m_short_window_size(10),
-    m_long_window_size(30)
+    m_long_window_size(30),
+    m_instrumentX(NULL),
+    m_instrumentY(NULL),
+    lastXTradePrice(0),
+    lastYTradePrice(0)
 {
     // cout << "GROUP NAME" << groupName << endl;
     //this->set_enabled_pre_open_data_flag(true);
@@ -84,9 +88,22 @@ void Team3Strategy::RegisterForStrategyEvents(StrategyEventRegister* eventRegist
 }
 void Team3Strategy::OnTrade(const TradeDataEventMsg& msg)
 {   
-	std::cout << "OnTrade(): (" << msg.adapter_time() << "): " << msg.instrument().symbol() << ": " << msg.trade().size() << " @ $" << msg.trade().price() << std::endl;
-	for (int i=0; i<1; i++)
-	    this->SendSimpleOrder(&msg.instrument(), 1); //buy one share every time there is a trade
+    if(msg.instrument().symbol() == "SPY"){
+        m_instrumentX = &msg.instrument();
+        lastXTradePrice = msg.trade().price();
+        // cout << "Symbol Traded SPY" << endl;
+
+    }
+    else{
+        m_instrumentY = &msg.instrument();
+        lastYTradePrice = msg.trade().price();
+
+    }
+        
+
+	// std::cout << "OnTrade(): (" << msg.adapter_time() << "): " << msg.instrument().symbol() << ": " << msg.trade().size() << " @ $" << msg.trade().price() << std::endl;
+	// for (int i=0; i<1; i++)
+	    // this->SendSimpleOrder(&msg.instrument(), 1); //buy one share every time there is a trade
 
 }
 void Team3Strategy::OnBar(const BarEventMsg& msg)
