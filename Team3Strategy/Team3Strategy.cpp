@@ -87,13 +87,27 @@ void Team3Strategy::RegisterForStrategyEvents(StrategyEventRegister* eventRegist
     // }
 }
 void Team3Strategy::OnTrade(const TradeDataEventMsg& msg)
-{   
+{   bool toTrade = false;
     if(msg.instrument().symbol() == "SPY"){
 
         std::cout << "OnTrade():" << msg.instrument().symbol() << ": " << msg.trade().size() << " @ $" << msg.trade().price() << std::endl;
-        std::cout << "Previous():" << m_instrumentX.symbol() << " @ $" << lastXTradePrice << std::endl;
+        if(m_instrumentX!=NULL){
+            std::cout << "Previous():" << m_instrumentX->symbol() << " @ $" << lastXTradePrice << std::endl;
+            if(msg.trade().price() > lastXTradePrice){
+                toTrade = true;
+            }
+        }
+        
         m_instrumentX = &msg.instrument();
         lastXTradePrice = msg.trade().price();
+
+        for (int i=0; i<1; i++){
+            if(toTrade){
+                this->SendSimpleOrder(m_instrumentY, 1); //buy one share
+            }
+            
+        }
+            
         // cout << "Symbol Traded SPY" << endl;
 
     }
