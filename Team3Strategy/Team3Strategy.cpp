@@ -20,7 +20,7 @@ using namespace RCM::StrategyStudio::Utilities;
 
 using namespace std;
 
-SimpleTrade::SimpleTrade(StrategyID strategyID, const std::string& strategyName, const std::string& groupName):
+Team3Strategy::Team3Strategy(StrategyID strategyID, const std::string& strategyName, const std::string& groupName):
     Strategy(strategyID, strategyName, groupName),
     m_momentum_map(),
     m_instrument_order_id_map(),
@@ -37,18 +37,18 @@ SimpleTrade::SimpleTrade(StrategyID strategyID, const std::string& strategyName,
     //this->set_enabled_post_close_trade_flag(true);
 }
 
-SimpleTrade::~SimpleTrade()
+Team3Strategy::~Team3Strategy()
 {
 }
 
-void SimpleTrade::OnResetStrategyState()
+void Team3Strategy::OnResetStrategyState()
 {
     m_momentum_map.clear();
     m_instrument_order_id_map.clear();
     m_momentum = 0;
 }
 
-void SimpleTrade::DefineStrategyParams()
+void Team3Strategy::DefineStrategyParams()
 {
     CreateStrategyParamArgs arg1("aggressiveness", STRATEGY_PARAM_TYPE_RUNTIME, VALUE_TYPE_DOUBLE, m_aggressiveness);
     params().CreateParam(arg1);
@@ -66,7 +66,7 @@ void SimpleTrade::DefineStrategyParams()
     params().CreateParam(arg5);
 }
 
-void SimpleTrade::DefineStrategyCommands()
+void Team3Strategy::DefineStrategyCommands()
 {
     StrategyCommand command1(1, "Reprice Existing Orders");
     commands().AddCommand(command1);
@@ -75,20 +75,20 @@ void SimpleTrade::DefineStrategyCommands()
     commands().AddCommand(command2);
 }
 
-void SimpleTrade::RegisterForStrategyEvents(StrategyEventRegister* eventRegister, DateType currDate)
+void Team3Strategy::RegisterForStrategyEvents(StrategyEventRegister* eventRegister, DateType currDate)
 {    
     for (SymbolSetConstIter it = symbols_begin(); it != symbols_end(); ++it) {
         eventRegister->RegisterForBars(*it, BAR_TYPE_TIME, 10);
     }
 }
-void SimpleTrade::OnTrade(const TradeDataEventMsg& msg)
+void Team3Strategy::OnTrade(const TradeDataEventMsg& msg)
 {
 	std::cout << "OnTrade(): (" << msg.adapter_time() << "): " << msg.instrument().symbol() << ": " << msg.trade().size() << " @ $" << msg.trade().price() << std::endl;
 	for (int i=0; i<1; i++)
 	this->SendSimpleOrder(&msg.instrument(), 1); //buy one share every time there is a trade
 
 }
-void SimpleTrade::OnBar(const BarEventMsg& msg)
+void Team3Strategy::OnBar(const BarEventMsg& msg)
 {
     if (m_debug_on) {
         ostringstream str;
@@ -115,7 +115,7 @@ void SimpleTrade::OnBar(const BarEventMsg& msg)
     }
 }
 
-void SimpleTrade::OnOrderUpdate(const OrderUpdateEventMsg& msg)
+void Team3Strategy::OnOrderUpdate(const OrderUpdateEventMsg& msg)
 {    
 	std::cout << "OnOrderUpdate(): " << msg.update_time() << msg.name() << std::endl;
     if(msg.completes_order())
@@ -125,7 +125,7 @@ void SimpleTrade::OnOrderUpdate(const OrderUpdateEventMsg& msg)
     }
 }
 
-void SimpleTrade::AdjustPortfolio(const Instrument* instrument, int desired_position)
+void Team3Strategy::AdjustPortfolio(const Instrument* instrument, int desired_position)
 {
     int trade_size = desired_position - portfolio().position(instrument);
 
@@ -146,7 +146,7 @@ void SimpleTrade::AdjustPortfolio(const Instrument* instrument, int desired_posi
     }
 }
 
-void SimpleTrade::SendSimpleOrder(const Instrument* instrument, int trade_size)
+void Team3Strategy::SendSimpleOrder(const Instrument* instrument, int trade_size)
 {
 
 	//this is simple check to avoid placing orders before the order book is actually fully initialized
@@ -177,7 +177,7 @@ void SimpleTrade::SendSimpleOrder(const Instrument* instrument, int trade_size)
     if (tra == TRADE_ACTION_RESULT_SUCCESSFUL) {
         m_instrument_order_id_map[instrument] = params.order_id;
         std::cout << "SendOrder(): Sending new order successful!" << std::endl;
-        std::cout << "Kushal Test 4" << std::endl;
+        std::cout << "Kushal Test 5" << std::endl;
     }
     else
     {
@@ -187,7 +187,7 @@ void SimpleTrade::SendSimpleOrder(const Instrument* instrument, int trade_size)
 }
 
 
-void SimpleTrade::SendOrder(const Instrument* instrument, int trade_size)
+void Team3Strategy::SendOrder(const Instrument* instrument, int trade_size)
 {
 	return;
     if(instrument->top_quote().ask()<.01 || instrument->top_quote().bid()<.01 || !instrument->top_quote().ask_side().IsValid() || !instrument->top_quote().ask_side().IsValid()) {
@@ -213,21 +213,21 @@ void SimpleTrade::SendOrder(const Instrument* instrument, int trade_size)
     }
 }
 
-void SimpleTrade::RepriceAll()
+void Team3Strategy::RepriceAll()
 {
     for (IOrderTracker::WorkingOrdersConstIter ordit = orders().working_orders_begin(); ordit != orders().working_orders_end(); ++ordit) {
         Reprice(*ordit);
     }
 }
 
-void SimpleTrade::Reprice(Order* order)
+void Team3Strategy::Reprice(Order* order)
 {
     OrderParams params = order->params();
     params.price = (order->order_side() == ORDER_SIDE_BUY) ? order->instrument()->top_quote().bid() + m_aggressiveness : order->instrument()->top_quote().ask() - m_aggressiveness;
     trade_actions()->SendCancelReplaceOrder(order->order_id(), params);
 }
 
-void SimpleTrade::OnStrategyCommand(const StrategyCommandEventMsg& msg)
+void Team3Strategy::OnStrategyCommand(const StrategyCommandEventMsg& msg)
 {
     switch (msg.command_id()) {
         case 1:
@@ -242,7 +242,7 @@ void SimpleTrade::OnStrategyCommand(const StrategyCommandEventMsg& msg)
     }
 }
 
-void SimpleTrade::OnParamChanged(StrategyParam& param)
+void Team3Strategy::OnParamChanged(StrategyParam& param)
 {    
 	/*
     if (param.param_name() == "aggressiveness") {                         

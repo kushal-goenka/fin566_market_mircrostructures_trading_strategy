@@ -57,14 +57,14 @@ public:
     Analytics::ScalarRollingWindow<double> m_longWindow;
 };
 
-class SimpleTrade : public Strategy {
+class Team3Strategy : public Strategy {
 public:
     typedef boost::unordered_map<const Instrument*, Momentum> MomentumMap; 
     typedef MomentumMap::iterator MomentumMapIterator;
 
 public:
-    SimpleTrade(StrategyID strategyID, const std::string& strategyName, const std::string& groupName);
-    ~SimpleTrade();
+    Team3Strategy(StrategyID strategyID, const std::string& strategyName, const std::string& groupName);
+    ~Team3Strategy();
 
 public: /* from IEventCallback */
 
@@ -187,7 +187,7 @@ extern "C" {
                                    const char* groupName)
     {
         if (strcmp(strategyType,GetType()) == 0) {
-            return *(new SimpleTrade(strategyID, strategyName, groupName));
+            return *(new Team3Strategy(strategyID, strategyName, groupName));
         } else {
             return NULL;
         }

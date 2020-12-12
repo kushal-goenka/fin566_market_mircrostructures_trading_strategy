@@ -1,3 +1,12 @@
+# Prerequisites
+#
+# Copy this script to /home/vagrant/Desktop/strategy_studio/backtesting/utilities/ with the command line executable
+# Copy cmd_config_example.txt to cmd_config.txt by: cp cmd_config_example.txt cmd_config.txt
+# Change the username in the above file to dlariviere
+#
+# Look at the below variables and modify them
+
+
 instanceName="S5"
 strategyName="Team3Strategy"
 startDate="2019-10-29"
