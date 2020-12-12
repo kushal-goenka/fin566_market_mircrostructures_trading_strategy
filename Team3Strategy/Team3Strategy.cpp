@@ -31,6 +31,7 @@ Team3Strategy::Team3Strategy(StrategyID strategyID, const std::string& strategyN
     m_short_window_size(10),
     m_long_window_size(30)
 {
+    // cout << "GROUP NAME" << groupName << endl;
     //this->set_enabled_pre_open_data_flag(true);
     //this->set_enabled_pre_open_trade_flag(true);
     //this->set_enabled_post_close_data_flag(true);
