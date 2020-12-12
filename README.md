@@ -1,6 +1,6 @@
 
 # FIN 566 Fall 2020 Team 3 Final Project
-
+#
 
  Implementation of a High Frequency trading Strategy using the Strategy Studio backtesting software
 
