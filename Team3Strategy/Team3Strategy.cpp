@@ -90,34 +90,34 @@ void Team3Strategy::OnTrade(const TradeDataEventMsg& msg)
 }
 void Team3Strategy::OnBar(const BarEventMsg& msg)
 {
-    if (m_debug_on) {
-        ostringstream str;
-        str << "FINDME" << msg.instrument().symbol() << ": " << msg.bar();
-        logger().LogToClient(LOGLEVEL_DEBUG, str.str().c_str());
-        //std::cout << str.str().c_str() << std::endl;
-    }
+    // if (m_debug_on) {
+    //     ostringstream str;
+    //     str << "FINDME" << msg.instrument().symbol() << ": " << msg.bar();
+    //     logger().LogToClient(LOGLEVEL_DEBUG, str.str().c_str());
+    //     //std::cout << str.str().c_str() << std::endl;
+    // }
 
-    if(msg.bar().close() < .01) return;
+    // if(msg.bar().close() < .01) return;
 
 
-    //check if we're already tracking the momentum object for this instrument, if not create a new one
-    MomentumMapIterator iter = m_momentum_map.find(&msg.instrument());
-    if (iter != m_momentum_map.end()) {
-        m_momentum = &iter->second;
-    } else {
-        m_momentum = &m_momentum_map.insert(make_pair(&msg.instrument(),Momentum(m_short_window_size,m_long_window_size))).first->second;
-    }
+    // //check if we're already tracking the momentum object for this instrument, if not create a new one
+    // MomentumMapIterator iter = m_momentum_map.find(&msg.instrument());
+    // if (iter != m_momentum_map.end()) {
+    //     m_momentum = &iter->second;
+    // } else {
+    //     m_momentum = &m_momentum_map.insert(make_pair(&msg.instrument(),Momentum(m_short_window_size,m_long_window_size))).first->second;
+    // }
 
-    DesiredPositionSide side = m_momentum->Update(msg.bar().close());
+    // DesiredPositionSide side = m_momentum->Update(msg.bar().close());
 
-    if(m_momentum->FullyInitialized()) {
-        AdjustPortfolio(&msg.instrument(), m_position_size * side);
-    }
+    // if(m_momentum->FullyInitialized()) {
+    //     AdjustPortfolio(&msg.instrument(), m_position_size * side);
+    // }
 }
 
 void Team3Strategy::OnOrderUpdate(const OrderUpdateEventMsg& msg)
 {    
-	std::cout << "OnOrderUpdate(): " << msg.update_time() << msg.name() << std::endl;
+	// std::cout << "OnOrderUpdate(): " << msg.update_time() << msg.name() << std::endl;
     if(msg.completes_order())
     {
 		m_instrument_order_id_map[msg.order().instrument()] = 0;
@@ -125,26 +125,26 @@ void Team3Strategy::OnOrderUpdate(const OrderUpdateEventMsg& msg)
     }
 }
 
-void Team3Strategy::AdjustPortfolio(const Instrument* instrument, int desired_position)
-{
-    int trade_size = desired_position - portfolio().position(instrument);
+// void Team3Strategy::AdjustPortfolio(const Instrument* instrument, int desired_position)
+// {
+//     int trade_size = desired_position - portfolio().position(instrument);
 
-    if (trade_size != 0) {
-        OrderID order_id = m_instrument_order_id_map[instrument];
-        //if we're not working an order for the instrument already, place a new order
-        if (order_id == 0) {
-            SendOrder(instrument, trade_size);
-        } else {  
-		    //otherwise find the order and cancel it if we're now trying to trade in the other direction
-            const Order* order = orders().find_working(order_id);
-            if(order && ((IsBuySide(order->order_side()) && trade_size < 0) || 
-			            ((IsSellSide(order->order_side()) && trade_size > 0)))) {
-                trade_actions()->SendCancelOrder(order_id);
-                //we're avoiding sending out a new order for the other side immediately to simplify the logic to the case where we're only tracking one order per instrument at any given time
-            }
-        }
-    }
-}
+//     if (trade_size != 0) {
+//         OrderID order_id = m_instrument_order_id_map[instrument];
+//         //if we're not working an order for the instrument already, place a new order
+//         if (order_id == 0) {
+//             SendOrder(instrument, trade_size);
+//         } else {  
+// 		    //otherwise find the order and cancel it if we're now trying to trade in the other direction
+//             const Order* order = orders().find_working(order_id);
+//             if(order && ((IsBuySide(order->order_side()) && trade_size < 0) || 
+// 			            ((IsSellSide(order->order_side()) && trade_size > 0)))) {
+//                 trade_actions()->SendCancelOrder(order_id);
+//                 //we're avoiding sending out a new order for the other side immediately to simplify the logic to the case where we're only tracking one order per instrument at any given time
+//             }
+//         }
+//     }
+// }
 
 void Team3Strategy::SendSimpleOrder(const Instrument* instrument, int trade_size)
 {
@@ -177,7 +177,7 @@ void Team3Strategy::SendSimpleOrder(const Instrument* instrument, int trade_size
     if (tra == TRADE_ACTION_RESULT_SUCCESSFUL) {
         m_instrument_order_id_map[instrument] = params.order_id;
         std::cout << "SendOrder(): Sending new order successful!" << std::endl;
-        std::cout << "Kushal Test 5" << std::endl;
+        std::cout << "Kushal Test 6" << std::endl;
     }
     else
     {
