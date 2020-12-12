@@ -43,49 +43,49 @@ Team3Strategy::~Team3Strategy()
 
 void Team3Strategy::OnResetStrategyState()
 {
-    m_momentum_map.clear();
-    m_instrument_order_id_map.clear();
-    m_momentum = 0;
+    // m_momentum_map.clear();
+    // m_instrument_order_id_map.clear();
+    // m_momentum = 0;
 }
 
 void Team3Strategy::DefineStrategyParams()
 {
-    CreateStrategyParamArgs arg1("aggressiveness", STRATEGY_PARAM_TYPE_RUNTIME, VALUE_TYPE_DOUBLE, m_aggressiveness);
-    params().CreateParam(arg1);
+    // CreateStrategyParamArgs arg1("aggressiveness", STRATEGY_PARAM_TYPE_RUNTIME, VALUE_TYPE_DOUBLE, m_aggressiveness);
+    // params().CreateParam(arg1);
 
-    CreateStrategyParamArgs arg2("position_size", STRATEGY_PARAM_TYPE_RUNTIME, VALUE_TYPE_INT, m_position_size);
-    params().CreateParam(arg2);
+    // CreateStrategyParamArgs arg2("position_size", STRATEGY_PARAM_TYPE_RUNTIME, VALUE_TYPE_INT, m_position_size);
+    // params().CreateParam(arg2);
 
-    CreateStrategyParamArgs arg3("short_window_size", STRATEGY_PARAM_TYPE_STARTUP, VALUE_TYPE_INT, m_short_window_size);
-    params().CreateParam(arg3);
+    // CreateStrategyParamArgs arg3("short_window_size", STRATEGY_PARAM_TYPE_STARTUP, VALUE_TYPE_INT, m_short_window_size);
+    // params().CreateParam(arg3);
     
-    CreateStrategyParamArgs arg4("long_window_size", STRATEGY_PARAM_TYPE_STARTUP, VALUE_TYPE_INT, m_long_window_size);
-    params().CreateParam(arg4);
+    // CreateStrategyParamArgs arg4("long_window_size", STRATEGY_PARAM_TYPE_STARTUP, VALUE_TYPE_INT, m_long_window_size);
+    // params().CreateParam(arg4);
     
-    CreateStrategyParamArgs arg5("debug", STRATEGY_PARAM_TYPE_RUNTIME, VALUE_TYPE_BOOL, m_debug_on);
-    params().CreateParam(arg5);
+    // CreateStrategyParamArgs arg5("debug", STRATEGY_PARAM_TYPE_RUNTIME, VALUE_TYPE_BOOL, m_debug_on);
+    // params().CreateParam(arg5);
 }
 
 void Team3Strategy::DefineStrategyCommands()
 {
-    StrategyCommand command1(1, "Reprice Existing Orders");
-    commands().AddCommand(command1);
+    // StrategyCommand command1(1, "Reprice Existing Orders");
+    // commands().AddCommand(command1);
 
-    StrategyCommand command2(2, "Cancel All Orders");
-    commands().AddCommand(command2);
+    // StrategyCommand command2(2, "Cancel All Orders");
+    // commands().AddCommand(command2);
 }
 
 void Team3Strategy::RegisterForStrategyEvents(StrategyEventRegister* eventRegister, DateType currDate)
 {    
-    for (SymbolSetConstIter it = symbols_begin(); it != symbols_end(); ++it) {
-        eventRegister->RegisterForBars(*it, BAR_TYPE_TIME, 10);
-    }
+    // for (SymbolSetConstIter it = symbols_begin(); it != symbols_end(); ++it) {
+    //     eventRegister->RegisterForBars(*it, BAR_TYPE_TIME, 10);
+    // }
 }
 void Team3Strategy::OnTrade(const TradeDataEventMsg& msg)
-{
+{   
 	std::cout << "OnTrade(): (" << msg.adapter_time() << "): " << msg.instrument().symbol() << ": " << msg.trade().size() << " @ $" << msg.trade().price() << std::endl;
 	for (int i=0; i<1; i++)
-	this->SendSimpleOrder(&msg.instrument(), 1); //buy one share every time there is a trade
+	    this->SendSimpleOrder(&msg.instrument(), 1); //buy one share every time there is a trade
 
 }
 void Team3Strategy::OnBar(const BarEventMsg& msg)
@@ -160,7 +160,7 @@ void Team3Strategy::SendSimpleOrder(const Instrument* instrument, int trade_size
         return;
      }*/
 
-    m_aggressiveness = 0.02; //send order two pennies more aggressive than BBO
+    m_aggressiveness = 0.5; //send order two pennies more aggressive than BBO
     double last_trade_price = instrument->last_trade().price();
     double price = trade_size > 0 ? last_trade_price + m_aggressiveness : last_trade_price - m_aggressiveness;
 
@@ -177,7 +177,7 @@ void Team3Strategy::SendSimpleOrder(const Instrument* instrument, int trade_size
     if (tra == TRADE_ACTION_RESULT_SUCCESSFUL) {
         m_instrument_order_id_map[instrument] = params.order_id;
         std::cout << "SendOrder(): Sending new order successful!" << std::endl;
-        std::cout << "Kushal Test 6" << std::endl;
+        std::cout << "Kushal Test 7" << std::endl;
     }
     else
     {
@@ -187,59 +187,60 @@ void Team3Strategy::SendSimpleOrder(const Instrument* instrument, int trade_size
 }
 
 
-void Team3Strategy::SendOrder(const Instrument* instrument, int trade_size)
-{
-	return;
-    if(instrument->top_quote().ask()<.01 || instrument->top_quote().bid()<.01 || !instrument->top_quote().ask_side().IsValid() || !instrument->top_quote().ask_side().IsValid()) {
-        std::stringstream ss;
-        ss << "Sending buy order for " << instrument->symbol() << " at price " << instrument->top_quote().ask() << " and quantity " << trade_size <<" with missing quote data";   
-        logger().LogToClient(LOGLEVEL_DEBUG, ss.str());
-        std::cout << "SendOrder(): " << ss.str() << std::endl;
-        return;
-     }
+// void Team3Strategy::SendOrder(const Instrument* instrument, int trade_size)
+// {
+// 	return;
+//     if(instrument->top_quote().ask()<.01 || instrument->top_quote().bid()<.01 || !instrument->top_quote().ask_side().IsValid() || !instrument->top_quote().ask_side().IsValid()) {
+//         std::stringstream ss;
+//         ss << "Sending buy order for " << instrument->symbol() << " at price " << instrument->top_quote().ask() << " and quantity " << trade_size <<" with missing quote data";   
+//         logger().LogToClient(LOGLEVEL_DEBUG, ss.str());
+//         std::cout << "SendOrder(): " << ss.str() << std::endl;
+//         std::cout << "WORKING Call this function" << std::endl;
+//         return;
+//      }
 
-    double price = trade_size > 0 ? instrument->top_quote().bid() + m_aggressiveness : instrument->top_quote().ask() - m_aggressiveness;
+//     double price = trade_size > 0 ? instrument->top_quote().bid() + m_aggressiveness : instrument->top_quote().ask() - m_aggressiveness;
 
-    OrderParams params(*instrument, 
-        abs(trade_size),
-        price, 
-        (instrument->type() == INSTRUMENT_TYPE_EQUITY) ? MARKET_CENTER_ID_NASDAQ : ((instrument->type() == INSTRUMENT_TYPE_OPTION) ? MARKET_CENTER_ID_CBOE_OPTIONS : MARKET_CENTER_ID_CME_GLOBEX),
-        (trade_size>0) ? ORDER_SIDE_BUY : ORDER_SIDE_SELL,
-        ORDER_TIF_DAY,
-        ORDER_TYPE_LIMIT);
+//     OrderParams params(*instrument, 
+//         abs(trade_size),
+//         price, 
+//         (instrument->type() == INSTRUMENT_TYPE_EQUITY) ? MARKET_CENTER_ID_NASDAQ : ((instrument->type() == INSTRUMENT_TYPE_OPTION) ? MARKET_CENTER_ID_CBOE_OPTIONS : MARKET_CENTER_ID_CME_GLOBEX),
+//         (trade_size>0) ? ORDER_SIDE_BUY : ORDER_SIDE_SELL,
+//         ORDER_TIF_DAY,
+//         ORDER_TYPE_LIMIT);
 
-    if (trade_actions()->SendNewOrder(params) == TRADE_ACTION_RESULT_SUCCESSFUL) {
-        m_instrument_order_id_map[instrument] = params.order_id;
-    }
-}
+//     if (trade_actions()->SendNewOrder(params) == TRADE_ACTION_RESULT_SUCCESSFUL) {
+//         m_instrument_order_id_map[instrument] = params.order_id;
+//     }
+// }
 
 void Team3Strategy::RepriceAll()
 {
-    for (IOrderTracker::WorkingOrdersConstIter ordit = orders().working_orders_begin(); ordit != orders().working_orders_end(); ++ordit) {
-        Reprice(*ordit);
-    }
+    // for (IOrderTracker::WorkingOrdersConstIter ordit = orders().working_orders_begin(); ordit != orders().working_orders_end(); ++ordit) {
+    //     Reprice(*ordit);
+    // }
 }
 
 void Team3Strategy::Reprice(Order* order)
 {
-    OrderParams params = order->params();
-    params.price = (order->order_side() == ORDER_SIDE_BUY) ? order->instrument()->top_quote().bid() + m_aggressiveness : order->instrument()->top_quote().ask() - m_aggressiveness;
-    trade_actions()->SendCancelReplaceOrder(order->order_id(), params);
+    // OrderParams params = order->params();
+    // params.price = (order->order_side() == ORDER_SIDE_BUY) ? order->instrument()->top_quote().bid() + m_aggressiveness : order->instrument()->top_quote().ask() - m_aggressiveness;
+    // trade_actions()->SendCancelReplaceOrder(order->order_id(), params);
 }
 
 void Team3Strategy::OnStrategyCommand(const StrategyCommandEventMsg& msg)
 {
-    switch (msg.command_id()) {
-        case 1:
-            RepriceAll();
-            break;
-        case 2:
-            trade_actions()->SendCancelAll();
-            break;
-        default:
-            logger().LogToClient(LOGLEVEL_DEBUG, "Unknown strategy command received");
-            break;
-    }
+    // switch (msg.command_id()) {
+    //     case 1:
+    //         RepriceAll();
+    //         break;
+    //     case 2:
+    //         trade_actions()->SendCancelAll();
+    //         break;
+    //     default:
+    //         logger().LogToClient(LOGLEVEL_DEBUG, "Unknown strategy command received");
+    //         break;
+    // }
 }
 
 void Team3Strategy::OnParamChanged(StrategyParam& param)
