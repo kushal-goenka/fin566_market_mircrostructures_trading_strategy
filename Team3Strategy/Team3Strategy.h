@@ -180,6 +180,7 @@ private:
 
     double lastXTradePrice;
     double lastYTradePrice;
+    double lastYTradeQuantity;
 
 
 };
