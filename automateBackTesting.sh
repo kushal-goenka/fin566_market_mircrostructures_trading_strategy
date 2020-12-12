@@ -9,7 +9,7 @@
 
 instanceName="S5"
 strategyName="Team3Strategy"
-startDate="2019-10-29"
+startDate="2019-10-30"
 endDate="2019-10-30"
 sharedObjectFileName="Team3Strategy.so"
 
