@@ -73,11 +73,13 @@ ___
 # Running a strategy with the automationScript
 
 
-First set command line to DISABLE_COMMAND_LINE=true in backtester_config file.
+First set command line to DISABLE_COMMAND_LINE=false in backtester_config file.
 
 Create an instnace of the strategy using piped multiple symbols:
 
 create_instance S17 Team3Strategy UIUC SIM-1001-101 dlariviere 10000000 -symbols SPY|MSFT
+
+Reset command line to DISABLE_COMMAND_LINE=true in backtester_config file.
 
 
 ## Important Links:
