@@ -7,7 +7,7 @@
 # Look at the below variables and modify them
 
 
-instanceName="S5"
+instanceName="S6TEAM"
 strategyName="Team3Strategy"
 startDate="2019-10-30"
 endDate="2019-10-30"
@@ -26,14 +26,15 @@ cp $sharedObjectOriginPath $sharedObjectDestinationPath
 # Run BackTesting Server in the background
 (cd /home/vagrant/Desktop/strategy_studio/backtesting && ./StrategyServerBacktesting&)
 
+/home/vagrant/Desktop/strategy_studio/backtesting/utilities/./StrategyCommandLine cmd strategy_instance_list
 # Create the Instance of the given strategy, might throw errors if it exists, but thats okay
-/home/vagrant/Desktop/strategy_studio/backtesting/utilities/./StrategyCommandLine cmd create_instance $instanceName $strategyName UIUC SIM-1001-101 dlariviere 1000000 -symbols SPY
+# /home/vagrant/Desktop/strategy_studio/backtesting/utilities/./StrategyCommandLine cmd create_instance $instanceName $strategyName UIUC SIM-1001-101 dlariviere 1000000 -symbols SPY
 
 # Get the current number of lines in the main_log.txt file
 logFileNumLines=$(wc -l < /home/vagrant/Desktop/strategy_studio/backtesting/logs/main_log.txt)
 
 # DEBUGGING OUTPUT
-# echo "Number of lines Currently in Log file:",$logFileNumLines
+echo "Number of lines Currently in Log file:",$logFileNumLines
 
 # Start the backtest
 /home/vagrant/Desktop/strategy_studio/backtesting/utilities/./StrategyCommandLine cmd start_backtest $startDate $endDate $instanceName 1
@@ -42,7 +43,7 @@ logFileNumLines=$(wc -l < /home/vagrant/Desktop/strategy_studio/backtesting/logs
 foundFinishedLogFile=$(grep -nr "finished.$" /home/vagrant/Desktop/strategy_studio/backtesting/logs/main_log.txt | gawk '{print $1}' FS=":"|tail -1)
 
 # DEBUGGING OUTPUT
-# echo "Last line found:",$foundFinishedLogFile
+echo "Last line found:",$foundFinishedLogFile
 
 # If the line ending with finished. is less than the previous length of the log file, then strategyBacktesting has not finished, 
 # once its greater than the previous, it means it has finished.
@@ -68,3 +69,7 @@ latestCRA=$(ls -t /home/vagrant/Desktop/strategy_studio/backtesting/backtesting-
 
 # Quit strategy studio working in the background
 /home/vagrant/Desktop/strategy_studio/backtesting/utilities/./StrategyCommandLine cmd quit
+
+
+
+# ./StrategyCommandLine cmd create_instance S16 Team3Strategy UIUC SIM-1001-101 dlariviere 10000000 -symbols MSFT -symbols SPY

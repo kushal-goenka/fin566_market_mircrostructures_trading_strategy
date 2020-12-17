@@ -37,7 +37,7 @@ Team3Strategy::Team3Strategy(StrategyID strategyID, const std::string& strategyN
     currentState(START),
     quantityHeld(0)
 {
-    // cout << "GROUP NAME" << groupName << endl;
+    //cout << "GROUP NAME" << groupName << endl;
     //this->set_enabled_pre_open_data_flag(true);
     //this->set_enabled_pre_open_trade_flag(true);
     //this->set_enabled_post_close_data_flag(true);
@@ -115,8 +115,7 @@ void Team3Strategy::OnTrade(const TradeDataEventMsg& msg)
             }
 
             
-        }
-        
+        }        
 
         m_instrumentX = &msg.instrument();
         lastXTradePrice = msg.trade().price();
