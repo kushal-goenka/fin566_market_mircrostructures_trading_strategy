@@ -197,6 +197,8 @@ private:
 
     StrategyState currentState;
 
+    double quantityHeld;
+
 };
 
 extern "C" {

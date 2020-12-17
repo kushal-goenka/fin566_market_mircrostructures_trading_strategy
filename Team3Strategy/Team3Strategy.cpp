@@ -34,7 +34,8 @@ Team3Strategy::Team3Strategy(StrategyID strategyID, const std::string& strategyN
     m_instrumentY(NULL),
     lastXTradePrice(0),
     lastYTradePrice(0),
-    currentState(START)
+    currentState(START),
+    quantityHeld(0)
 {
     // cout << "GROUP NAME" << groupName << endl;
     //this->set_enabled_pre_open_data_flag(true);
@@ -101,12 +102,18 @@ void Team3Strategy::OnTrade(const TradeDataEventMsg& msg)
                     currentState = BUY;
                     
                 }
-                else{
+                
+            }
+
+            if(currentState == HOLD){
+                cout << "Current State: " << currentState << endl;
+                if(msg.trade().price() < lastXTradePrice){
                     currentState = SELL;
-        
+                    
                 }
                 
             }
+
             
         }
         
@@ -121,6 +128,7 @@ void Team3Strategy::OnTrade(const TradeDataEventMsg& msg)
 
                     cout << "Current State: " << currentState << endl;
                     currentState = HOLD;
+                    quantityHeld += msg.trade().size();
                     this->SendSimpleOrder(m_instrumentY, msg.trade().size()); //buy one share
 
                     
@@ -129,6 +137,7 @@ void Team3Strategy::OnTrade(const TradeDataEventMsg& msg)
                     cout << "Buying One" << endl;
                     cout << "Current State: " << currentState << endl;
                     currentState = HOLD;
+                    quantityHeld += msg.trade().size();
                     this->SendSimpleOrder(m_instrumentY, 1);
                 }
                 
@@ -140,7 +149,10 @@ void Team3Strategy::OnTrade(const TradeDataEventMsg& msg)
 
                     cout << "Current State: " << currentState << endl;
                     currentState = HOLD;
-                    this->SendSimpleOrder(m_instrumentY, - msg.trade().size()); //buy one share
+                    if(quantityHeld > msg.trade().size()){
+                        this->SendSimpleOrder(m_instrumentY, -1 * msg.trade().size()); //sell one share
+                    }
+                    
 
                     
                 }
@@ -148,7 +160,10 @@ void Team3Strategy::OnTrade(const TradeDataEventMsg& msg)
                     cout << "Selling One" << endl;
                     cout << "Current State: " << currentState << endl;
                     currentState = HOLD;
-                    this->SendSimpleOrder(m_instrumentY, -1);
+                    if(quantityHeld > 1){
+                        this->SendSimpleOrder(m_instrumentY, -1);
+                    }
+                    
                 }
                 
             }
