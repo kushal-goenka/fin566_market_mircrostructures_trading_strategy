@@ -87,21 +87,24 @@ void Team3Strategy::RegisterForStrategyEvents(StrategyEventRegister* eventRegist
     // }
 }
 void Team3Strategy::OnTrade(const TradeDataEventMsg& msg)
-{   bool toTrade = false;
+{   
+    bool toTrade = false;
+
     if(msg.instrument().symbol() == "SPY"){
 
-        // std::cout << "OnTrade():" << msg.instrument().symbol() << ": " << msg.trade().size() << " @ $" << msg.trade().price() << std::endl;
+        // Receive new message from SPY: 
+
+        // 1. Apply trade logic
         if(m_instrumentX!=NULL){
-            // std::cout << "Previous():" << m_instrumentX->symbol() << " @ $" << lastXTradePrice << std::endl;
+            
+            // Buy logic based on msgs from SPY
+
             if(msg.trade().price() > lastXTradePrice){
                 toTrade = true;
             }
         }
         
-
-        m_instrumentX = &msg.instrument();
-        lastXTradePrice = msg.trade().price();
-
+        // 2. Execute trades
         for (int i=0; i<1; i++){
             if(toTrade){
                 if(msg.trade().size() > lastYTradePrice){
@@ -116,12 +119,21 @@ void Team3Strategy::OnTrade(const TradeDataEventMsg& msg)
             }
             
         }
-            
-        // cout << "Symbol Traded SPY" << endl;
+        // 3. Update historical info
+        m_instrumentX = &msg.instrument();
+        lastXTradePrice = msg.trade().price();
 
     }
     else{
-        // std::cout << "OnTrade():" << msg.instrument().symbol() << ": " << msg.trade().size() << " @ $" << msg.trade().price() << std::endl;
+
+        // Receive Msg from the other ticker, apply the same logic.
+
+        // 1. Apply trade logic
+            // TODO
+        
+        // 2. Execute trade
+
+        // 3. Update historical info
         m_instrumentY = &msg.instrument();
         lastYTradePrice = msg.trade().price();
         lastYTradeQuantity = msg.trade().size();
