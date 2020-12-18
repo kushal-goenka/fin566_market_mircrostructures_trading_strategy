@@ -68,9 +68,11 @@ public:
     enum StrategyState {
 
         START = 0,
-        BUY = 1,
-        HOLD = 2,
-        SELL = 3
+        SENT_BUY=1,
+        BUY = 2,
+        HOLD = 3,
+        SELL = 4,
+        SENT_SELL = 5
 
     };
 
