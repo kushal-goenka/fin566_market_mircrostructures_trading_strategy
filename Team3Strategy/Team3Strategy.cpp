@@ -33,9 +33,11 @@ Team3Strategy::Team3Strategy(StrategyID strategyID, const std::string& strategyN
     m_instrumentX(NULL),
     m_instrumentY(NULL),
     lastXTradePrice(0),
-    lastYTradePrice(0)
+    lastYTradePrice(0),
+    currentState(START),
+    quantityHeld(0)
 {
-    // cout << "GROUP NAME" << groupName << endl;
+    //cout << "GROUP NAME" << groupName << endl;
     //this->set_enabled_pre_open_data_flag(true);
     //this->set_enabled_pre_open_trade_flag(true);
     //this->set_enabled_post_close_data_flag(true);
@@ -87,36 +89,86 @@ void Team3Strategy::RegisterForStrategyEvents(StrategyEventRegister* eventRegist
     // }
 }
 void Team3Strategy::OnTrade(const TradeDataEventMsg& msg)
-{   
-    bool toTrade = false;
-
+{   bool toBuy = false;
+    bool toSell = false;
     if(msg.instrument().symbol() == "SPY"){
 
         // Receive new message from SPY: 
 
         // 1. Apply trade logic
         if(m_instrumentX!=NULL){
-            
-            // Buy logic based on msgs from SPY
-
-            if(msg.trade().price() > lastXTradePrice){
-                toTrade = true;
+            // std::cout << "Previous():" << m_instrumentX->symbol() << " @ $" << lastXTradePrice << std::endl;
+            if(currentState==START || currentState == HOLD){
+                cout << "Current State: " << currentState << endl;
+                if(msg.trade().price() > lastXTradePrice){
+                    currentState = BUY;
+                    
+                }
+                
             }
-        }
-        
-        // 2. Execute trades
+
+            if(currentState == HOLD){
+                cout << "Current State: " << currentState << endl;
+                if(msg.trade().price() < lastXTradePrice){
+                    currentState = SELL;
+                    
+                }
+                
+            }
+
+            
+        }        
+
+        m_instrumentX = &msg.instrument();
+        lastXTradePrice = msg.trade().price();
+
         for (int i=0; i<1; i++){
-            if(toTrade){
-                if(msg.trade().size() > lastYTradePrice){
+            if(currentState == BUY){
+                if(msg.trade().size() > lastYTradeQuantity){
                     cout << "Buying Multiple" << msg.trade().size() <<endl;
+
+                    cout << "Current State: " << currentState << endl;
+                    currentState = SENT_BUY;
+                    quantityHeld += msg.trade().size();
                     this->SendSimpleOrder(m_instrumentY, msg.trade().size()); //buy one share
+
+                    
                 }
                 else{
                     cout << "Buying One" << endl;
+                    cout << "Current State: " << currentState << endl;
+                    currentState = SENT_BUY;
+                    quantityHeld += msg.trade().size();
                     this->SendSimpleOrder(m_instrumentY, 1);
                 }
                 
             }
+
+            if(currentState == SELL){
+                if(msg.trade().size() > lastYTradeQuantity){
+                    cout << "Selling Multiple" << msg.trade().size() <<endl;
+
+                    cout << "Current State: " << currentState << endl;
+                    currentState = SENT_SELL;
+                    if(quantityHeld > msg.trade().size()){
+                        this->SendSimpleOrder(m_instrumentY, -1 * msg.trade().size()); //sell one share
+                    }
+                    
+
+                    
+                }
+                else{
+                    cout << "Selling One" << endl;
+                    cout << "Current State: " << currentState << endl;
+                    currentState = SENT_SELL;
+                    if(quantityHeld > 1){
+                        this->SendSimpleOrder(m_instrumentY, -1);
+                    }
+                    
+                }
+                
+            }
+
             
         }
         // 3. Update historical info
@@ -180,6 +232,11 @@ void Team3Strategy::OnOrderUpdate(const OrderUpdateEventMsg& msg)
     {
 		m_instrument_order_id_map[msg.order().instrument()] = 0;
 		std::cout << "OnOrderUpdate(): order is complete; " << std::endl;
+
+        if (currentState == SENT_BUY || currentState == SENT_SELL){
+            currentState = HOLD;
+        }
+        
     }
 }
 

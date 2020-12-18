@@ -30,6 +30,8 @@ enum DesiredPositionSide {
     DESIRED_POSITION_SIDE_LONG=1
 };
 
+
+
 class Momentum {
 public:
     
@@ -61,6 +63,19 @@ class Team3Strategy : public Strategy {
 public:
     typedef boost::unordered_map<const Instrument*, Momentum> MomentumMap; 
     typedef MomentumMap::iterator MomentumMapIterator;
+
+    
+    enum StrategyState {
+
+        START = 0,
+        SENT_BUY=1,
+        BUY = 2,
+        HOLD = 3,
+        SELL = 4,
+        SENT_SELL = 5
+
+    };
+
 
 public:
     Team3Strategy(StrategyID strategyID, const std::string& strategyName, const std::string& groupName);
@@ -182,6 +197,9 @@ private:
     double lastYTradePrice;
     double lastYTradeQuantity;
 
+    StrategyState currentState;
+
+    double quantityHeld;
 
 };
 
