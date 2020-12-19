@@ -193,13 +193,18 @@ private:
     const MarketModels::Instrument* m_instrumentX;
     const MarketModels::Instrument* m_instrumentY;
 
-    double lastXTradePrice;
-    double lastYTradePrice;
-    double lastYTradeQuantity;
+    double lastETFTradePrice[2];        // past EFT trade container, only 2
+    double lastCOMPTradePrice[2];       // past Component trade container, only 2
+    double lastCOMPTradeQuantity;          // last component trade quantility
+
+    double lastExePrice;                // last execute price
+
+    double upThreshold;                 // threshold for upward trend,  <1
+    double downThreshold;               // threshold for downward trend, <1
 
     StrategyState currentState;
 
-    double quantityHeld;
+    double quantityHeld;                // instrument quantility already held
 
 };
 
