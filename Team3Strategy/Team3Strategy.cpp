@@ -9,6 +9,7 @@
 #include "ExecutionTypes.h"
 #include <Utilities/Cast.h>
 #include <Utilities/utils.h>
+#include "DataTypes.h"
 
 #include <math.h>
 #include <iostream>
@@ -39,8 +40,8 @@ Team3Strategy::Team3Strategy(StrategyID strategyID, const std::string& strategyN
     quantityHeld(0), 
     lastExePrice(0),
 
-    upThreshold(0.002),               // parameter to tune
-    downThreshold(0.002)              // parameter to tune
+    upThreshold(0.05),               // parameter to tune
+    downThreshold(0.05)              // parameter to tune
 
 {
     //cout << "GROUP NAME" << groupName << endl;
@@ -105,24 +106,19 @@ void Team3Strategy::OnTrade(const TradeDataEventMsg& msg)
 
         // 1. Apply trade logic
         if(m_instrumentX!=NULL){
-
+            
             if(currentState==START){
-                if(msg.trade().price()/min(lastETFTradePrice[1], lastETFTradePrice[2]) > 1 + upThreshold){
+                if(msg.trade().price() - min(lastETFTradePrice[1], lastETFTradePrice[2]) > upThreshold){
                     currentState = BUY;
-                    cout << "Trade opportunities" << endl;
                 }   
             }
 
-            if(currentState == HOLD){
-                if(msg.trade().price()/lastExePrice < 0.995 || msg.trade().price()/lastExePrice > 1.01){
-                    currentState = SELL;
-                }
-
-                if(msg.trade().price()/max(lastETFTradePrice[1], lastETFTradePrice[2]) < 1 - downThreshold){
+            if (currentState == HOLD){
+                if(msg.trade().price() - max(lastETFTradePrice[1], lastETFTradePrice[2]) < - downThreshold){
                     currentState = SELL;
                 }
             }
-        }        
+        }       
 
         // 2. Update historical info
         m_instrumentX = &msg.instrument();
@@ -133,9 +129,13 @@ void Team3Strategy::OnTrade(const TradeDataEventMsg& msg)
     else{
 
         // Receive Msg from the other ticker, apply the same logic.
-
-        // 1. Apply trade logic
-            // TODO
+        
+        // 1. Apply stop-loss and take-profit logic
+        if(currentState == HOLD){
+            if(msg.trade().price()/lastExePrice < 0.995 || msg.trade().price()/lastExePrice > 1.01){
+                currentState = SELL;
+            }
+        }
         
         // 2. Update historical info
         m_instrumentY = &msg.instrument();
@@ -148,26 +148,13 @@ void Team3Strategy::OnTrade(const TradeDataEventMsg& msg)
     // Execute trade decision
     for (int i=0; i<1; i++){
         if(currentState == BUY){
-            if(msg.trade().size() > lastCOMPTradeQuantity){
-                currentState = SENT_BUY;
-                this->SendSimpleOrder(m_instrumentY, msg.trade().size()); //buy multiple shares, the component ticker
-            }
-            else{
-                currentState = SENT_BUY;
-                this->SendSimpleOrder(m_instrumentY, 1);
-            }
+            currentState = SENT_BUY;
+            this->SendSimpleOrder(m_instrumentY, lastCOMPTradeQuantity); //buy multiple shares, the component ticker
         }
 
         if(currentState == SELL){
             currentState = SENT_SELL;
-                // this->SendSimpleOrder(m_instrumentY, -1 * msg.trade().size()); //sell one share
-            this->SendSimpleOrder(m_instrumentY, -1 * quantityHeld); //sell one share
-            // else{
-            //     cout << "Selling One" << endl;
-            //     currentState = SENT_SELL;
-            //     if(quantityHeld > 1){
-            //         this->SendSimpleOrder(m_instrumentY, -1);
-            //     }
+            this->SendSimpleOrder(m_instrumentY, -1 * quantityHeld);
         }
     }
 }
@@ -205,20 +192,21 @@ void Team3Strategy::OnOrderUpdate(const OrderUpdateEventMsg& msg)
     {
 		m_instrument_order_id_map[msg.order().instrument()] = 0;
 
-        lastExePrice = msg.order().price();
-
         if (currentState == SENT_BUY){
             currentState = HOLD;
-            quantityHeld += msg.order().size_completed();
+            quantityHeld += abs(msg.order().size_completed());
             std::cout << "Update: buy order is complete; size: " << msg.order().size_completed() <<std::endl;
+
+            if (abs(msg.order().size_completed()) > 0){
+                lastExePrice = msg.order().price();
+            }
         }   
 
         if (currentState == SENT_SELL){
-            currentState = START;
-            quantityHeld += msg.order().size_completed();
+            quantityHeld -= abs(msg.order().size_completed());
             std::cout << "Update: sell order is complete; size: " << msg.order().size_completed() <<std::endl;
+                currentState = START;
         }   
-
     }
 }
 

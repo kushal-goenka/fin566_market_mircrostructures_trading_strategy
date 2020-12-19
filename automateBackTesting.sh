@@ -70,5 +70,11 @@ latestCRA=$(ls -t /home/vagrant/Desktop/strategy_studio/backtesting/backtesting-
 # Quit strategy studio working in the background
 /home/vagrant/Desktop/strategy_studio/backtesting/utilities/./StrategyCommandLine cmd quit
 
+# print PnL
+cd /home/vagrant/Desktop/strategy_studio/backtesting/backtesting-cra-exports
+latestPnL=$(ls -t grep *pnl* | head -1)
+tail -1 $latestPnL
+cd /home/vagrant/Desktop/strategy_studio/backtesting/utilities
+
 # Generate portfolio metric
-python /home/vagrant/Desktop/strategy_studio/localdev/RCM/StrategyStudio/examples/fin566_fall_2020_group_three/metrics/calc_metric.py 
+# python /home/vagrant/Desktop/strategy_studio/localdev/RCM/StrategyStudio/examples/fin566_fall_2020_group_three/metrics/calc_metric.py 
