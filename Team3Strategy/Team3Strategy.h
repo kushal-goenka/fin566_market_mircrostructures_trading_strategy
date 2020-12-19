@@ -21,7 +21,9 @@
 #include <vector>
 #include <map>
 #include <iostream>
+#include <string>
 
+using namespace std;
 using namespace RCM::StrategyStudio;
 
 enum DesiredPositionSide {
@@ -190,17 +192,20 @@ private:
 
     // Added by Kushal
 
-    const MarketModels::Instrument* m_instrumentX;
-    const MarketModels::Instrument* m_instrumentY;
+    const MarketModels::Instrument* instrucmentSignal;
+    const MarketModels::Instrument* instrucmentTrade;
 
-    double lastETFTradePrice[2];        // past EFT trade container, only 2
-    double lastCOMPTradePrice[2];       // past Component trade container, only 2
-    double lastCOMPTradeQuantity;          // last component trade quantility
+    double signalLastPrice[2];        // price container for signal ticker
+    double tradeLastPrice[2];         // price container for trade ticker
+    double tradeLastQuantity;         // last trade quantity of trade ticker 
 
     double lastExePrice;                // last execute price
 
     double upThreshold;                 // threshold for upward trend,  <1
     double downThreshold;               // threshold for downward trend, <1
+
+    std::string signal;                      // signal ticker: SPY or COMP
+    std::string totrade;                     // trade ticker: SPY or COMP
 
     StrategyState currentState;
 

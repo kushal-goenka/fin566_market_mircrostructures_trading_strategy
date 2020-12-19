@@ -31,11 +31,14 @@ Team3Strategy::Team3Strategy(StrategyID strategyID, const std::string& strategyN
     m_debug_on(true),
     m_short_window_size(10),
     m_long_window_size(30),
-    m_instrumentX(NULL),
-    m_instrumentY(NULL),
 
-    lastETFTradePrice {0, 0},
-    lastCOMPTradePrice {0, 0},
+    instrucmentSignal(NULL),
+    instrucmentTrade(NULL),
+    signal("SPY"),
+    totrade("COMP"),
+
+    signalLastPrice {0, 0},
+    tradeLastPrice {0, 0},
     currentState(START),
     quantityHeld(0), 
     lastExePrice(0),
@@ -100,61 +103,61 @@ void Team3Strategy::OnTrade(const TradeDataEventMsg& msg)
     bool toBuy = false;
     bool toSell = false;
     
-    if(msg.instrument().symbol() == "SPY"){
+    // update signal - from signal ticker
+    if((signal=="SPY" && msg.instrument().symbol()=="SPY") || (signal=="COMP" && msg.instrument().symbol()!="SPY")){
 
         // Receive new message from SPY: 
 
         // 1. Apply trade logic
-        if(m_instrumentX!=NULL){
+        if(instrucmentSignal!=NULL){
             
             if(currentState==START){
-                if(msg.trade().price() - min(lastETFTradePrice[1], lastETFTradePrice[2]) > upThreshold){
+                if(msg.trade().price() - min(signalLastPrice[1], signalLastPrice[2]) > upThreshold){
                     currentState = BUY;
                 }   
             }
 
             if (currentState == HOLD){
-                if(msg.trade().price() - max(lastETFTradePrice[1], lastETFTradePrice[2]) < - downThreshold){
+                if(msg.trade().price() - max(signalLastPrice[1], signalLastPrice[2]) < - downThreshold){
                     currentState = SELL;
                 }
             }
         }       
 
         // 2. Update historical info
-        m_instrumentX = &msg.instrument();
-        lastETFTradePrice[1] = lastETFTradePrice[2];
-        lastETFTradePrice[2] = msg.trade().price();
-
+        instrucmentSignal = &msg.instrument();
+        signalLastPrice[1] = signalLastPrice[2];
+        signalLastPrice[2] = msg.trade().price();
     }
-    else{
 
-        // Receive Msg from the other ticker, apply the same logic.
+    // update signal - from trade ticker
+    if ((totrade=="SPY" && msg.instrument().symbol()=="SPY") || (totrade=="COMP" && msg.instrument().symbol()!="SPY")){
         
-        // 1. Apply stop-loss and take-profit logic
+        // stop-loss and take-profit logic
         if(currentState == HOLD){
             if(msg.trade().price()/lastExePrice < 0.995 || msg.trade().price()/lastExePrice > 1.01){
                 currentState = SELL;
             }
         }
-        
-        // 2. Update historical info
-        m_instrumentY = &msg.instrument();
-        lastCOMPTradePrice[1] = lastCOMPTradePrice[2];
-        lastCOMPTradePrice[2] = msg.trade().price();
-        lastCOMPTradeQuantity = msg.trade().size();
+
+        instrucmentTrade = &msg.instrument();
+        tradeLastPrice[1] = tradeLastPrice[2];
+        tradeLastPrice[2] = msg.trade().price();
+        tradeLastQuantity = msg.trade().size();
 
     }
+    
 
     // Execute trade decision
     for (int i=0; i<1; i++){
         if(currentState == BUY){
             currentState = SENT_BUY;
-            this->SendSimpleOrder(m_instrumentY, lastCOMPTradeQuantity); //buy multiple shares, the component ticker
+            this->SendSimpleOrder(instrucmentTrade, tradeLastQuantity); //buy multiple shares, the component ticker
         }
 
         if(currentState == SELL){
             currentState = SENT_SELL;
-            this->SendSimpleOrder(m_instrumentY, -1 * quantityHeld);
+            this->SendSimpleOrder(instrucmentTrade, -1 * quantityHeld);
         }
     }
 }
