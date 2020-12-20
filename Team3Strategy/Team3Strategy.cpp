@@ -134,17 +134,17 @@ void Team3Strategy::OnTrade(const TradeDataEventMsg& msg)
     if ((totrade=="SPY" && msg.instrument().symbol()=="SPY") || (totrade=="COMP" && msg.instrument().symbol()!="SPY")){
         
         // stop-loss and take-profit logic
-        if(currentState == HOLD){
-            if(msg.trade().price()/lastExePrice < 0.995 || msg.trade().price()/lastExePrice > 1.01){
-                currentState = SELL;
+        if(instrucmentSignal!=NULL){
+            if(currentState == HOLD){
+                if(msg.trade().price()/lastExePrice < 0.995 || msg.trade().price()/lastExePrice > 1.01){
+                    currentState = SELL;
+                }
             }
-        }
-
+        }    
         instrucmentTrade = &msg.instrument();
         tradeLastPrice[1] = tradeLastPrice[2];
         tradeLastPrice[2] = msg.trade().price();
         tradeLastQuantity = msg.trade().size();
-
     }
     
 
