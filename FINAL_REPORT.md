@@ -11,6 +11,9 @@
   - [Components and Symbols Chosen](#components-and-symbols-chosen)
 - [Implementation and Analysis](#implementation-and-analysis)
   - [Pre-Implementation Research](#pre-implementation-research)
+    - [Correlations and Time Series Plots](#correlations-and-time-series-plots)
+    - [Analysing Trade Intervals for Consecutive Trades](#analysing-trade-intervals-for-consecutive-trades)
+    - [Regression Results](#regression-results)
   - [C++ Implementation:](#c-implementation)
   - [Post-Backtesting analaysis](#post-backtesting-analaysis)
 - [Troubleshooting](#troubleshooting)
@@ -39,6 +42,12 @@ Below are a cumulative list of technical terms and abbreviations that is seen in
 
 
 ## Pre-Implementation Research
+
+### Correlations and Time Series Plots
+
+### Analysing Trade Intervals for Consecutive Trades
+
+### Regression Results
 
 
 
