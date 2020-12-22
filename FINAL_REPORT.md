@@ -13,7 +13,8 @@
 - [Implementation and Analysis](#implementation-and-analysis)
   - [General Overview of Our Strategy](#general-overview-of-our-strategy)
   - [Pre-Implementation Research](#pre-implementation-research)
-    - [Correlations and Time Series Plots](#correlations-and-time-series-plots)
+    - [Correlation Plots](#correlation-plots)
+    - [Time Series Plots](#time-series-plots)
     - [Analysing Trade Intervals for Consecutive Trades](#analysing-trade-intervals-for-consecutive-trades)
     - [Regression Results](#regression-results)
   - [C++ Implementation:](#c-implementation)
@@ -72,13 +73,60 @@ The backtest results verify our analysis and show our strategy is a money maker 
 
 ## Pre-Implementation Research
 
-### Correlations and Time Series Plots
+### Correlation Plots
+
+Correlations of different components (AAPL, AMZN, MSFT, JPM, INTC, SPY) with each other is as follows:
+
+![](images/correlationPlot.png)
+
+We selected all components in this correlation except AMZN as it has less correlation with the others and also since it’s not one of the highest weighted components of SPY.
+
+### Time Series Plots
+
+Time Series plot of each ticker was done separately. We chose the five highest weighted components of SPY. The five tickers used for this plot are: AAPL, AMZN, INTC, JPM and MSFT. The plot is as follows:
+
+![](images/timeSeriesPlots.png)
+
+From the above plot, we can see that AAPL, JPM and SPY closely mimic each other, whereas the others do not have much closeness according to the plot. Our plot from correlation also confirm that AAPL and SPY are closely related.
+
 
 ### Analysing Trade Intervals for Consecutive Trades
 
+Although our aim is to predict future price movement, the issue is the time span. As such, before diving into intriguing prediction analysis, we first analyze the time interval between two consecutive trades, which provide useful information on the frequency of trade. We rely on the analysis in this section to help us choose the proper time window for future return and historical returns in the next section. To proceed, we calculate the time interval between two consecutive trades for the whole sample period and different tickers. We summarize the information by plotting out the percentiles of resulting time intervals. The result is as follows. 
+
+As shown in the results, roughly 40% of two consecutive trades of 4 components occur within 1 second, and 55% consecutive trades of SPY occur within 1 second. Within 1 second, only 30% of trades occur within 0.1 second, and the number of qualified trades decrease steadily as time interval shortens. On the contrary, the number of trades decreases much faster beyond 1 second. The results imply the trades are clustering, traders trade actively when there are opportunities, but can keep silent for long time periods. 
+
+$$ ALERT: ADD IMAGE HERE$$$
+
+![](images/PercentilesOfTradeIntervals.png)
+
+
 ### Regression Results
 
+We make use of the statistical tool of regression to analyze the correlation between SPY’s movement and components’ movement. The aim of the regression analysis is to test whether historical price movement of SPY could predict the future price movement of its components. If the leading effect exists between SPY and its components, we expect to observe that the historical return of SPY is able to predict components’ future return in a consistent and persistent manner. 
+The regression can be conducted with off-the-shelf toolkits. The issue remains is the choice of the time span of historical returns (features, independent variables) and future return (label, dependent variable). First of all, we would like to predict the short-term future return, since we want to liquidize the position and take the profit quickly. Holding the position for a longer time means less trade, or more principal. Usually, the time window of the features and labels should match to obtain the strongest prediction performance. According to analysis of trade intervals, extremely short time windows lead to the problem of collinearity, since it is highly possible that no trade occurs within all the selected windows. On the other hand, a longer time-window usually doesn’t have strong predictability on the short-term return. Based on the trade interval analysis and above logic, we choose two sets of features and labels to run the regression:
 
+-  Long time window: future return in 1 seconds as label; historical returns for 1, 5, 10, 30 seconds as features.
+
+-  Short time window: future return in 1 millisecond as label; historical returns for 1, 5, 10, 30 microseconds as features (data - the whole month)
+
+1. **Long-Time Window**: 
+   For the regression on the long-time window, we make use components’ 1-second future return as dependent variable. As for independent variables, we use both components’ and SPY’s historical returns of 1, 5, 10, 30 seconds. The results are compiled in the following table.
+   
+    As shown in the table, historical returns of SPY show strong and significant predictability for components’ future return in all of the 4 regressions. Even surprisingly, the coefficients are even larger than the component’s themselves. The results suggest that SPY’s historical returns are good predictors of components’ future performance, at least for the 1-second time span. For the sake of clarity, we only compile the regression results for one day, but we found the results are consistent and persistent during the whole month. 
+
+    $$ ALERT: ADD TABLE HERE$$$
+
+2. **Short Time Window**:
+     -  **(0.001 seconds)**:
+
+        $$ ALERT: ADD TABLE HERE$$$
+    -  **(0.000001 seconds) Microseconds**:
+        1. AAPL:
+
+
+
+        $$ ALERT: ADD TABLE HERE$$$
 
 
 ## C++ Implementation:
