@@ -18,7 +18,10 @@
     - [Analysing Trade Intervals for Consecutive Trades](#analysing-trade-intervals-for-consecutive-trades)
     - [Regression Results](#regression-results)
   - [C++ Implementation:](#c-implementation)
-  - [Post-Backtesting analaysis](#post-backtesting-analaysis)
+    - [Algorithm:](#algorithm)
+    - [Parameter Tuning Results](#parameter-tuning-results)
+    - [Results and P&L on unseen Q1 2020 Data:](#results-and-pl-on-unseen-q1-2020-data)
+  - [Post-Backtesting analysis](#post-backtesting-analysis)
 - [Troubleshooting](#troubleshooting)
 - [Contributions and Next Steps](#contributions-and-next-steps)
 - [References](#references)
@@ -40,6 +43,8 @@ Below are a cumulative list of technical terms and abbreviations that is seen in
 2. **ETF**: An exchange traded fund is a type of security that involves a collection of securities - such as stocks (all of the shares into which ownership of the corporation is divided), commodities, or bonds (an instrument of indebtedness of the bond issuer to the holders.), that tracks an underlying index , although they can invest in any number of industry sectors or use various strategies. ETFs are in many ways similar to mutual funds; however, they are listed on exchanges and ETF shares trade throughout the day just like ordinary stock. ETFs offer low expense ratios (expense ratio of a stock or asset fund is the total percentage of fund assets used for administrative, management, advertising, and all other expenses) and fewer broker commissions than buying the stocks individually. The ETF we have used here for our strategy is SPY that tracks the S&P 500 index. There are many other ETFs like DIA that tracks the Dow Jones index, QQQ that tracks the NASDAQ index, etc.
 
 3. **Backtesting**:
+
+    $$ Alert: Finish this section$$$
 
 ## Components and Symbols Chosen
 
@@ -131,9 +136,28 @@ The regression can be conducted with off-the-shelf toolkits. The issue remains i
 
 ## C++ Implementation:
 
+### Algorithm:
+
+In our main algorithm, we define a particular signal (In our case SPY), and an associated component that we wish to trade on (One of MSFT, AAPL, JPM, INTC). We then define an up and down threshold value, which are absolute figures in USD. Via parameter tuning, we found the best range for this threshold to be around $0.03 to $0.05, and hence our default threshold is $0.05. We have another tuning parameter which is the number of past trades to factor into the decision-making model. (Here the default is the past two trades). Lastly, we also define an aggressiveness value which determines the price at which we place the BUY or SELL order compared to the current market price.
+
+$$ Alert: Finish this section$$$
+
+### Parameter Tuning Results
+
+Varying the threshold value and running the backtest for all the symbols, we see a ‘sweet spot’ in the $0.03 - $0.05 range where the profits were maximized. Any greater and the profitability reduced exponentially.
+
+Negative aggressiveness, leads to losses (Hypothesis: Orders Not Filled).
+
+Best Aggressiveness for all symbols was 0.00, always decreased P&L with more aggressive strategies
+
+![](images/parameterTuning.png)
+
+### Results and P&L on unseen Q1 2020 Data:
+
+![](images/newData.png)
 
 
-## Post-Backtesting analaysis
+## Post-Backtesting analysis
 
 
 # Troubleshooting
