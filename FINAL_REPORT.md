@@ -16,13 +16,13 @@
     - [Time Series Plots](#time-series-plots)
     - [Analysing Trade Intervals for Consecutive Trades](#analysing-trade-intervals-for-consecutive-trades)
     - [Regression Results](#regression-results)
-  - [C++ Implementation:](#c-implementation)
-    - [Strategy Algorithm:](#strategy-algorithm)
+  - [C++ Implementation](#c-implementation)
+    - [Strategy Algorithm](#strategy-algorithm)
     - [Parameter Tuning Results](#parameter-tuning-results)
     - [Results and P&L on unseen Q1 2020 Data:](#results-and-pl-on-unseen-q1-2020-data)
   - [Post-Backtesting analysis](#post-backtesting-analysis)
   - [Complementary Analysis: What is the source of profitability?](#complementary-analysis-what-is-the-source-of-profitability)
-- [Conclusion:](#conclusion)
+- [Conclusion](#conclusion)
 - [Troubleshooting](#troubleshooting)
 - [Contributions and Next Steps](#contributions-and-next-steps)
 - [References](#references)
@@ -107,8 +107,6 @@ Although our aim is to predict future price movement, the issue is the time span
 
 As shown in the results, roughly 40% of two consecutive trades of 4 components occur within 1 second, and 55% consecutive trades of SPY occur within 1 second. Within 1 second, only 30% of trades occur within 0.1 second, and the number of qualified trades decrease steadily as time interval shortens. On the contrary, the number of trades decreases much faster beyond 1 second. The results imply the trades are clustering, traders trade actively when there are opportunities, but can keep silent for long time periods. 
 
-$$ ALERT: ADD IMAGE HERE$$$
-
 ![](images/PercentilesOfTradeIntervals.png)
 
 
@@ -160,9 +158,9 @@ ___
             We noticed after filtering those unchanged price instances for both independent variables and dependent variables, the correlations are still not significantly different than zero. So, we can make a conclusion that using SPY to predict the components is still not so good.
 
 
-## C++ Implementation:
+## C++ Implementation
 
-### Strategy Algorithm:
+### Strategy Algorithm
 ___
 
 In our main algorithm, we define a particular signal (In our case SPY), and an associated component that we wish to trade on (One of MSFT, AAPL, JPM, INTC). We then define an up and down threshold value, which are absolute figures in USD. Via parameter tuning, we found the best range for this threshold to be around $0.03 to $0.05, and hence our default threshold is $0.05. We have another tuning parameter which is the number of past trades to factor into the decision-making model. (Here the default is the past two trades). Lastly, we also define an aggressiveness value which determines the price at which we place the BUY or SELL order compared to the current market price.
@@ -278,7 +276,7 @@ Another interesting question is whether the leading effect is of single directio
 
 As shown in the plots, both strategies make money, suggesting the leading effect exists in both directions. However, we observe that our strategy generates higher PnL on all of the 4 components, which implies the leading effect is stronger than its reverse version. Existence of a two-direction leading effect also points out the potentials for future improvement: one could trade on both directions, or design effective logic to switch direction intelligently. 
 
-# Conclusion:
+# Conclusion
 
 Under the ideal circumstance, it’s possible that our strategy made money on AAPL, MSFT, INTC, and JPM.
 And when we take a look at the simple rate of return result, we notice the p value for AAPL and MSFT are less than 0.05, which means the SPY signals that can generate significantly different than zero simple rate of return in AAPL and MSFT.
