@@ -142,7 +142,16 @@ The regression can be conducted with off-the-shelf toolkits. The issue remains i
 
 In our main algorithm, we define a particular signal (In our case SPY), and an associated component that we wish to trade on (One of MSFT, AAPL, JPM, INTC). We then define an up and down threshold value, which are absolute figures in USD. Via parameter tuning, we found the best range for this threshold to be around $0.03 to $0.05, and hence our default threshold is $0.05. We have another tuning parameter which is the number of past trades to factor into the decision-making model. (Here the default is the past two trades). Lastly, we also define an aggressiveness value which determines the price at which we place the BUY or SELL order compared to the current market price.
 
-$$ Alert: Finish this section$$$
+On every trade, leveraging Strategy Studio’s onTrade API, we check if the current price of the signal (SPY) is greater than the price traded in the last 2 trades, and if so, we recognize the upward trend and send a BUY order for the last traded quantity of the component we want to trade on.
+
+Similarly, once we have bought a certain quantity of shares, we hold it until we see a downward trend in the price of our signal (SPY) and if we see it go down by a given threshold, we send an order to SELL and liquidate or entire current position. This is how we close out our strategy.
+
+To control the different states, and situations in our strategy, we leverage a Finite State Machine (FSM), with the following states, START, SENT_BUY, SENT_SELL, BUY, SELL, HOLD. These various states ensure that we don’t sell before we actually have bought certain stocks, and also that we don’t buy multiple times consecutively until our previous order has been completed. To do so, once we recognize a certain trend in our signal, we change our state machine to BUY, and then SENT_BUY or SELL, and then SENT_SELL and send an order to the exchange/backtesting engine. During a SELL order, we close out our entire current holdings. We then wait for Strategy Studio’s onOrderUpdate function where if we see a successful order, completed we transition to our next state. If our successful order was a SELL, we then go back to the start state indicating that we can now buy again, or if the last successful order was a BUY, we transition to the HOLD state to wait until we can liquidate our position. As readers might notice, this does mean that we alternate between buying and selling our component’s stock, and this seems to work well during our backtests.
+
+Furthermore, we also have logic to prevent large losses, and hence exit our current position if we see a 5% drop from our last successful order to BUY, and we also exit our strategy and sell when we are up about 1% from our last successful order to BUY.
+
+A couple of caveats that could be potentially dangerous and that we hope to modify in the future is that our strategy currently does not close out its entire position at the end of the day, and on multiple trading days, it’s possible that it holds shares overnight. Ideally, we don’t want to take such a risk, and hence add logic in our strategy which would close our position before market close on any given day.
+
 
 ### Parameter Tuning Results
 
@@ -292,9 +301,9 @@ c.	Certain symbols on some specific days cause segmentation faults for reasons u
 
     c.	Optimized and revised strategy implementation.
 
-    d.	Conducted part of portfolio analysis, including PnL plots, winning rate, losing rate, average winning pnl, average losing pnl and trade distribution.
+    d.	Conducted part of portfolio analysis, including PnL plots, winning rate, losing rate, average winning PnL, average losing PnL and trade distribution.
 
-    e.	Conducted complement backbesting to analyze the source of profitability.  
+    e.	Conducted complement backtesting to analyze the source of profitability.  
 
     f.	Report contribution: strategy distribution,  regression description, regression of long time window, trade interval analysis, complement analysis: source of profitability. 
     Last one - no experience on C++. I googled a lot. Individual Contributions
