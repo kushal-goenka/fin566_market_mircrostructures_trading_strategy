@@ -1,6 +1,5 @@
 # FIN 566 Algorithmic Trading Final Report
 
-
 # Table of Contents
 
 - [FIN 566 Algorithmic Trading Final Report](#fin-566-algorithmic-trading-final-report)
@@ -18,7 +17,7 @@
     - [Analysing Trade Intervals for Consecutive Trades](#analysing-trade-intervals-for-consecutive-trades)
     - [Regression Results](#regression-results)
   - [C++ Implementation:](#c-implementation)
-    - [Algorithm:](#algorithm)
+    - [Strategy Algorithm:](#strategy-algorithm)
     - [Parameter Tuning Results](#parameter-tuning-results)
     - [Results and P&L on unseen Q1 2020 Data:](#results-and-pl-on-unseen-q1-2020-data)
   - [Post-Backtesting analysis](#post-backtesting-analysis)
@@ -49,6 +48,8 @@ Below are a cumulative list of technical terms and abbreviations that is seen in
     $$ Alert: Finish this section$$$
 
 4. **IEX**: 
+
+    $$ Alert: Finish this section$$$
 
 
 ## Components and Symbols Chosen
@@ -120,28 +121,49 @@ The regression can be conducted with off-the-shelf toolkits. The issue remains i
 
 -  Short time window: future return in 1 millisecond as label; historical returns for 1, 5, 10, 30 microseconds as features (data - the whole month)
 
+___
+**NOTE**
+
+For all the below regression plots here is a Key/Legend to comprehend the results:
+
+*** represents the coefficient is significant at 0.001 level; ** 0.01 represents level;  * represents 0.05 level. 
+
+Here, the first column in every row represents the independent variable which was used to predict the other components in the row. **Example**: Row 1, SPY - 1s refers to using historical SPY data to predict on MSFT, APPL etc, and the resulting regression coefficients. 
+
+COMP in the first column refers to the corresponding ticker for the components in the columns next to it. **Example**: COMP-1s in the MSFT column represents MSFT-1s. And hence refers to using MSFT’s historical data to predict itself.
+___
+
 1. **Long-Time Window**: 
    For the regression on the long-time window, we make use components’ 1-second future return as dependent variable. As for independent variables, we use both components’ and SPY’s historical returns of 1, 5, 10, 30 seconds. The results are compiled in the following table.
    
     As shown in the table, historical returns of SPY show strong and significant predictability for components’ future return in all of the 4 regressions. Even surprisingly, the coefficients are even larger than the component’s themselves. The results suggest that SPY’s historical returns are good predictors of components’ future performance, at least for the 1-second time span. For the sake of clarity, we only compile the regression results for one day, but we found the results are consistent and persistent during the whole month. 
 
-    $$ ALERT: ADD TABLE HERE$$$
+    ![](images/table1.png)
 
 2. **Short Time Window**:
-     -  **(0.001 seconds)**:
+     -  **(0.001 seconds) Millisecond**:
 
-        $$ ALERT: ADD TABLE HERE$$$
+        ![](images/table2.png)
     -  **(0.000001 seconds) Microseconds**:
-        1. AAPL:
+        
+        1. Without filtering
+            We begin by calculating the future returns. Then, we do the regression for the components as the dependent variable with microsecond time windows.
 
+            ![](images/table3.png)
 
+            This doesn’t have any conclusions either, because we are concerned about the coefficients of AAPL here which are really low and the p value are also greater than 0.05. Hence, we cannot use microsecond level for our regression. However, as said above we can restrict the trading interval to times where the price change is zero.
 
-        $$ ALERT: ADD TABLE HERE$$$
+            But for JPM, when we try to predict SPY, the SPY10, SPY30, JPM 30 all have significantly different than zero coefficients. However, the coefficient for JPM30 is very close to zero, which means the prediction is not very strong.
+        2. After filtering the unchanged price instances
+            ![](images/table4.png)
+
+            We noticed after filtering those unchanged price instances for both independent variables and dependent variables, the correlations are still not significantly different than zero. So, we can make a conclusion that using SPY to predict the components is still not so good.
 
 
 ## C++ Implementation:
 
-### Algorithm:
+### Strategy Algorithm:
+___
 
 In our main algorithm, we define a particular signal (In our case SPY), and an associated component that we wish to trade on (One of MSFT, AAPL, JPM, INTC). We then define an up and down threshold value, which are absolute figures in USD. Via parameter tuning, we found the best range for this threshold to be around $0.03 to $0.05, and hence our default threshold is $0.05. We have another tuning parameter which is the number of past trades to factor into the decision-making model. (Here the default is the past two trades). Lastly, we also define an aggressiveness value which determines the price at which we place the BUY or SELL order compared to the current market price.
 
@@ -157,6 +179,7 @@ A couple of caveats that could be potentially dangerous and that we hope to modi
 
 
 ### Parameter Tuning Results
+___
 
 Varying the threshold value and running the backtest for all the symbols, we see a ‘sweet spot’ in the $0.03 - $0.05 range where the profits were maximized. Any greater and the profitability reduced exponentially.
 
@@ -167,6 +190,7 @@ Best Aggressiveness for all symbols was 0.00, always decreased P&L with more agg
 ![](images/parameterTuning.png)
 
 ### Results and P&L on unseen Q1 2020 Data:
+___
 
 ![](images/newData.png)
 
@@ -210,6 +234,8 @@ And for AAPL, the cumulative return rate is even larger than MSFT. However, it�
 ---
 **NOTE**
 For all sections and plots below, SPY2COMP means our strategy generates signals from SPY and trade on components. Similarly, SPY2SPY means generate signals from SPY and trade on SPY; COMP2SPY means to generate signals from components and trade on SPY in the sequel. 
+
+All plots without an x axis label refer to timeseries, and hence refer to trades over the span of all trading days in the month of October 2019.
 ___
 
 Few other analyses that were carried out are as follows.
