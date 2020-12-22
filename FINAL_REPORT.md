@@ -43,13 +43,10 @@ Below are a cumulative list of technical terms and abbreviations that is seen in
 1. **Index**: An index is a method to track the performance of some group of assets in a standardized way. Indices typically measure the performance of a basket of securities intended to replicate a certain area of the market. These may be broad-based to capture the entire market such as the Standard & Poor's 500 (S&P 500), National Association of Securities Dealers Automated Quotations (NASDAQ) or Dow Jones Industrial Average (DJIA), or more specialized such as indices that track a particular industry or segment.
 2. **ETF**: An exchange traded fund is a type of security that involves a collection of securities - such as stocks (all of the shares into which ownership of the corporation is divided), commodities, or bonds (an instrument of indebtedness of the bond issuer to the holders.), that tracks an underlying index , although they can invest in any number of industry sectors or use various strategies. ETFs are in many ways similar to mutual funds; however, they are listed on exchanges and ETF shares trade throughout the day just like ordinary stock. ETFs offer low expense ratios (expense ratio of a stock or asset fund is the total percentage of fund assets used for administrative, management, advertising, and all other expenses) and fewer broker commissions than buying the stocks individually. The ETF we have used here for our strategy is SPY that tracks the S&P 500 index. There are many other ETFs like DIA that tracks the Dow Jones index, QQQ that tracks the NASDAQ index, etc.
 
-3. **Backtesting**:
+3. **Backtesting**: This refers to the method of simply testing a given strategy or model on historical data, and assessing how well it performs on the same. We used our strategy to tweek parameters after backtesting on our training data, and then confirmed that it does generalize by backtesting on newer unseen data feeds. If one determines that their strategy works in backtesting, it acts as a proof of concept to potentially release the strategy into production.
 
-    $$ Alert: Finish this section$$$
 
-4. **IEX**: 
-
-    $$ Alert: Finish this section$$$
+4. **IEX**: IEX refers to the Investors Exchange, a stock exchange that represents about 2% of the total market volume in the United States. We used data from this exchange to backtest our strategy, run analysis and provide a proof of concept. It prides itself on fairness, and transparency.
 
 
 ## Components and Symbols Chosen
@@ -153,6 +150,7 @@ ___
 
             But for JPM, when we try to predict SPY, the SPY10, SPY30, JPM 30 all have significantly different than zero coefficients. However, the coefficient for JPM30 is very close to zero, which means the prediction is not very strong.
         2. After filtering the unchanged price instances
+   
             ![](images/table4.png)
 
             We noticed after filtering those unchanged price instances for both independent variables and dependent variables, the correlations are still not significantly different than zero. So, we can make a conclusion that using SPY to predict the components is still not so good.
@@ -231,7 +229,8 @@ And for AAPL, the cumulative return rate is even larger than MSFT. However, itâ€
 
 ---
 **NOTE**
-For all sections and plots below, SPY2COMP means our strategy generates signals from SPY and trade on components. Similarly, SPY2SPY means generate signals from SPY and trade on SPY; COMP2SPY means to generate signals from components and trade on SPY in the sequel. 
+
+For all sections and plots below, SPY2COMP refers to our strategy generating signals from SPY and trading on its components. Similarly, SPY2SPY refers to generating signals from SPY and trading on SPY; COMP2SPY refers to generate signals from the components and then subsequently, trading on SPY. 
 
 All plots without an x axis label refer to timeseries, and hence refer to trades over the span of all trading days in the month of October 2019.
 ___
@@ -296,6 +295,14 @@ b.	Running backtesting on a sample strategy - Seems like the username and group 
 
 c.	Certain symbols on some specific days cause segmentation faults for reasons unknown, we havenâ€™ t been able to narrow down the reason for this issue.
 
+d. While attempting to use the StrategyStudioCommandLine for backtesting, the configuration file had to be modified with the correct username, 'dlariviere' for our use case to successfully send trades to the backtesting server.
+
+e. Difficuly in assessing when a backtest truly completed as the strategystudio command line immediately returns. A solution was to constantly ping the log file and check for the "finished" logline.
+
+d. Not using the onOrderUpdate function correctly to ensure that only 1 order is sent, instead of multiple
+
+e. Pearl of Wisdom: Definitely try to automate the backtesting process. From compilation to Exporting PnL files.
+
 # Contributions and Next Steps
 
 1.	Khavya Chandrasekaran (6 closed issues; 12 commits):
@@ -334,6 +341,9 @@ c.	Certain symbols on some specific days cause segmentation faults for reasons u
     e.	Created an automation script to simplify and speed up backtesting of our strategy, allowing us to make modifications and quickly run the tests with a shell script to analyse results
 
     f.	General cleanup / presentation slides / project readme / issue management etc.
+
+    I definitely found it very rewarding to have the opportunity to work on a real backtesting engine, and write strategy code. It gave me the exposure and helped me understand the internal workings of running backtests using an industry standard software solution. Additionally, I was definitely exposed to various methods of analysis, and terminologies such as Sharpe Ratios, Regression plots etc, and actually saw it being used in practice. I would defitely look at the many other API's provided by Strategy Studio to determine more advanced features we could leverage to improve our model. Functions such as onBar, I believe could help us implement a strategy of looking at any number of trades in a given time period as opposed to a fixed quantity.
+
 4.	Yong Xie (10 closed issues; 25 commits):
     a.	Conducted SPY-components correlation analysis
 
@@ -353,5 +363,6 @@ c.	Certain symbols on some specific days cause segmentation faults for reasons u
 
 # References
 
-1.	https://www.investopedia.com/terms/e/etf.asp
+1. https://www.investopedia.com/terms/e/etf.asp
+2. https://iextrading.com/trading/market-data/
 
