@@ -48,6 +48,9 @@ Below are a cumulative list of technical terms and abbreviations that is seen in
 
     $$ Alert: Finish this section$$$
 
+4. **IEX**: 
+
+
 ## Components and Symbols Chosen
 
 Our analysis and strategy involved the following tickers: 
@@ -204,9 +207,28 @@ The cumulative return is the whole dataset time period cumulative return rate. F
 
 And for AAPL, the cumulative return rate is even larger than MSFT. However, it’s still unclear for us to say such return is from the stock itself or from the things that we generate from SPY signals. We do the following pair analysis.
 
-Few other analyses that were carried out are as follows:
+---
+**NOTE**
+For all sections and plots below, SPY2COMP means our strategy generates signals from SPY and trade on components. Similarly, SPY2SPY means generate signals from SPY and trade on SPY; COMP2SPY means to generate signals from components and trade on SPY in the sequel. 
+___
 
+Few other analyses that were carried out are as follows.
 
+1. ### Number of Trades:
+
+    For the following plots, the x axis refers to the timeseries axis, and hence refer to individual days in the month of October, October 1st to October 31st 2019.
+
+    ![](images/SPY2COMP-Trade_Count_by_date.png)
+
+2. ### PnL by time and date
+
+    ![](images/SPY2COMP.png)
+
+3. ### Histogram of Profit and Loss Per Trade
+
+    Here the y axis is simply the quantity, since this is a histogram plot, and the x axis is the profit or loss occurred on every trade for the specific component. As mentioned before SPY2COMP merely denotes that we used SPY to predict future returns of the component and hence we traded on the component as specified in the plot title.
+
+    ![](images/SPY2COMP-Ave_Trade_PnL.png)
 
 
 ## Complementary Analysis: What is the source of profitability?
@@ -221,13 +243,12 @@ Our strategy is designed with the leading effect in mind, but it could be compro
 
 Based on the above logic, we further make use of component tickers to generate signals instead of SPY, and trade on components. We plot the PnL by tickers as follows. The dash lines represent PnL generated from pure momentum trades, and solid lines represent PnL of our strategy. As shown clearly, our strategy outperforms pure momentum strategy on INTC, MSFT and AAPL by quite large margins. More saliently, pure momentum trades barely make money and even lose money on AAPL. The results suggest that the profitability of our strategy mainly, if not all, comes from the leading effect. 
 
-
-$$ ADD TWO PLOTS HERE$$$
+![](images/COMP2COMP-SPY2COMP.png)
 
 Another interesting question is whether the leading effect is of single direction. Our regression results imply the reverse leading effect (from component to SPY) is weak, but not none. Reverse leading effect is also very intuitive in the sense that components might respond faster to the firm-specific shock. To answer this question, we further run the strategy that trades on SPY but generates signals from components. We compare the results with benchmark strategy as follows.
 
 
-$$ ADD TWO PLOTS HERE$$$
+![](images/SPY2COMP-COMP2SPY.png)
 
 As shown in the plots, both strategies make money, suggesting the leading effect exists in both directions. However, we observe that our strategy generates higher PnL on all of the 4 components, which implies the leading effect is stronger than its reverse version. Existence of a two-direction leading effect also points out the potentials for future improvement: one could trade on both directions, or design effective logic to switch direction intelligently. 
 
@@ -250,9 +271,6 @@ a.	Yong Xie.
 b.	Running backtesting on a sample strategy - Seems like the username and group name in the .h file were not correctly set from the default. Caused the backtesting server to segfault
 
 c.	Certain symbols on some specific days cause segmentation faults for reasons unknown, we haven’ t been able to narrow down the reason for this issue.
-
-
-
 
 # Contributions and Next Steps
 
