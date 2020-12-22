@@ -23,7 +23,7 @@
     - [Results and P&L on unseen Q1 2020 Data:](#results-and-pl-on-unseen-q1-2020-data)
   - [Post-Backtesting analysis](#post-backtesting-analysis)
   - [Complementary Analysis: What is the source of profitability?](#complementary-analysis-what-is-the-source-of-profitability)
-  - [Conclusion:](#conclusion)
+- [Conclusion:](#conclusion)
 - [Troubleshooting](#troubleshooting)
 - [Contributions and Next Steps](#contributions-and-next-steps)
 - [References](#references)
@@ -169,6 +169,8 @@ We calculated the Sharpe ratio by dividing the annualized return by the volatili
 1. **MSFT** :
 
     ![](images/cumulativeMSFT.png)
+    <!-- <img src="images/cumulativeMSFT.png"  width="120" height="120"> -->
+
     ![](images/cumulativeMSFTTable.png)
 
 2. **AAPL** :
@@ -220,7 +222,7 @@ $$ ADD TWO PLOTS HERE$$$
 
 As shown in the plots, both strategies make money, suggesting the leading effect exists in both directions. However, we observe that our strategy generates higher PnL on all of the 4 components, which implies the leading effect is stronger than its reverse version. Existence of a two-direction leading effect also points out the potentials for future improvement: one could trade on both directions, or design effective logic to switch direction intelligently. 
 
-## Conclusion:
+# Conclusion:
 
 Under the ideal circumstance, it’s possible that our strategy made money on AAPL, MSFT, INTC, and JPM.
 And when we take a look at the simple rate of return result, we notice the p value for AAPL and MSFT are less than 0.05, which means the SPY signals that can generate significantly different than zero simple rate of return in AAPL and MSFT.
